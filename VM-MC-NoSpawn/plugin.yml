@@ -1,0 +1,11 @@
+name: NoSpawn
+version: 0.2
+description: Disable mob spawning in certain areas.
+author: JavaWarlord
+website: www.valiantmarauders.com
+main: com.valiantmarauders.minecraft.nospawn.NoSpawn
+commands:
+  nospawn:
+    description: Main command
+    aliases: [nosp]
+    usage: /<command> [parameters]
