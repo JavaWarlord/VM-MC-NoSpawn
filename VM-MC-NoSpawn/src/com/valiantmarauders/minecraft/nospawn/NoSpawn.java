@@ -39,6 +39,7 @@ import com.valiantmarauders.minecraft.location.CubedArea;
 public class NoSpawn extends JavaPlugin {
 
 	private List<CubedArea> areas;
+	private FileManager fileManager;
 
 	public void onEnable() {
 		// Save a copy of the default config.yml if one is not there
@@ -46,15 +47,15 @@ public class NoSpawn extends JavaPlugin {
 		PluginManager pm = this.getServer().getPluginManager();
 		pm.registerEvents(new MobSpawnListener(this), this);
 		areas = new ArrayList<CubedArea>();
+		fileManager = new FileManager(this);
 
 		loadAreas(getConfig(), areas);
-
 		for (CubedArea a : areas) {
 			getLogger().info(a.toString());
 		}
 	}
 
-	private void loadAreas(FileConfiguration config, List<CubedArea> areas2) {
+	private void loadAreas(FileConfiguration config, List<CubedArea> areas) {
 		// TODO Auto-generated method stub
 		// Get a Set of all the worlds
 		Set<String> worlds = getConfig().getConfigurationSection("worlds")
@@ -80,7 +81,7 @@ public class NoSpawn extends JavaPlugin {
 					String[] points = cubes[i].split(" ");
 					// for (int j = 0; j < points.length; j++) {
 					// getLogger().info("[" + points[j] + "]");
-					areas.add(new CubedArea(getServer().getWorld(world),
+					this.areas.add(new CubedArea(getServer().getWorld(world),
 							Integer.valueOf(points[0].trim()), Integer
 									.valueOf(points[1].trim()), Integer
 									.valueOf(points[2].trim()), Integer
@@ -115,6 +116,7 @@ public class NoSpawn extends JavaPlugin {
 	}
 
 	public void onDisable() {
+		fileManager.saveAreas(areas);
 	}
 
 	public void detectedSpawn(CreatureSpawnEvent event) {
