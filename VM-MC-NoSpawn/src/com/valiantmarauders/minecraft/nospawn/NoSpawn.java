@@ -47,10 +47,15 @@ public class NoSpawn extends JavaPlugin {
 		pm.registerEvents(new MobSpawnListener(this), this);
 		areas = new ArrayList<CubedArea>();
 
-		// Get list of worlds in worlds section.
-		getLogger().info("----- KEY info -----");
-		FileConfiguration config = getConfig();
+		loadAreas(getConfig(), areas);
 
+		for (CubedArea a : areas) {
+			getLogger().info(a.toString());
+		}
+	}
+
+	private void loadAreas(FileConfiguration config, List<CubedArea> areas2) {
+		// TODO Auto-generated method stub
 		// Get a Set of all the worlds
 		Set<String> worlds = getConfig().getConfigurationSection("worlds")
 				.getKeys(false);
@@ -86,20 +91,6 @@ public class NoSpawn extends JavaPlugin {
 				}
 			}
 		}
-		getLogger().info("--------------------");
-		for (CubedArea a : areas) {
-			getLogger().info(a.toString());
-		}
-		/*
-		 * Test code
-		 */
-		// areas.add(new CubedArea(getServer().getWorld("newWorld"), 0, 60, 0,
-		// 240, 115, 240));
-		// areas.add(new CubedArea(getServer().getWorld("newWorld"), 0, 60, 0,
-		// 240, 0, 240));
-		/*
-		 * Test code
-		 */
 	}
 
 	public boolean onCommand(CommandSender sender, Command cmd, String label,
