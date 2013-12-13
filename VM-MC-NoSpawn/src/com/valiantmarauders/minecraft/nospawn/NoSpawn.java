@@ -60,25 +60,30 @@ public class NoSpawn extends JavaPlugin {
 			getLogger().info(world);
 			String areasInWorld = config
 					.getString("worlds." + world + ".areas");
-			// Strip the brackets
-			areasInWorld = areasInWorld.substring(1, areasInWorld.length() - 1);
-			// getLogger().info(areasInWorld);
-			// areasInWorld = areasInWorld.replace(" ", " ");
-			// getLogger().info(areasInWorld);
-			String[] cubes = areasInWorld.split(",");
-			for (int i = 0; i < cubes.length; i++) {
-				cubes[i] = cubes[i].trim();
-				// getLogger().info(cubes[i]);
-				String[] points = cubes[i].split(" ");
-				// for (int j = 0; j < points.length; j++) {
-				// getLogger().info("[" + points[j] + "]");
-				areas.add(new CubedArea(getServer().getWorld(world), Integer
-						.valueOf(points[0].trim()), Integer.valueOf(points[1]
-						.trim()), Integer.valueOf(points[2].trim()), Integer
-						.valueOf(points[3].trim()), Integer.valueOf(points[4]
-						.trim()), Integer.valueOf(points[5].trim())));
-				// }
-
+			getLogger().info(areasInWorld);
+			if (areasInWorld != null) {
+				// Strip the brackets
+				areasInWorld = areasInWorld.substring(1,
+						areasInWorld.length() - 1);
+				// getLogger().info(areasInWorld);
+				// areasInWorld = areasInWorld.replace(" ", " ");
+				// getLogger().info(areasInWorld);
+				String[] cubes = areasInWorld.split(",");
+				for (int i = 0; i < cubes.length; i++) {
+					cubes[i] = cubes[i].trim();
+					// getLogger().info(cubes[i]);
+					String[] points = cubes[i].split(" ");
+					// for (int j = 0; j < points.length; j++) {
+					// getLogger().info("[" + points[j] + "]");
+					areas.add(new CubedArea(getServer().getWorld(world),
+							Integer.valueOf(points[0].trim()), Integer
+									.valueOf(points[1].trim()), Integer
+									.valueOf(points[2].trim()), Integer
+									.valueOf(points[3].trim()), Integer
+									.valueOf(points[4].trim()), Integer
+									.valueOf(points[5].trim())));
+					// }
+				}
 			}
 		}
 		getLogger().info("--------------------");
