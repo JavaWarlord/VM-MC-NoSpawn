@@ -31,7 +31,7 @@ public class CubedArea {
 		this.z2 = z2;
 	}
 
-	public boolean containsLocation(Location location) {
+	public boolean contains(Location location) {
 		// TODO Auto-generated method stub
 		double x = location.getX();
 		double y = location.getY();

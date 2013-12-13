@@ -1,11 +1,8 @@
 package com.valiantmarauders.minecraft.nospawn;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -57,20 +54,27 @@ public class NoSpawn extends JavaPlugin {
 				if (args[0].equalsIgnoreCase("reload")) {
 					getServer().getPluginManager().disablePlugin(this);
 					getServer().getPluginManager().enablePlugin(this);
+					return true;
 				} else if (args[0].equalsIgnoreCase("test")) {
 					getServer().broadcastMessage(
 							"This is just a test command!!!");
+					return true;
 				} else if (args[0].equalsIgnoreCase("show")) {
 					areaManager.display(sender);
+					return true;
 				}
-			} else if (args[0].equalsIgnoreCase("set")) {
-
-				areaManager.add(new CubedArea(getServer().getWorld("world"),
-						Integer.valueOf(args[1]), Integer.valueOf(args[2]),
-						Integer.valueOf(args[3]), Integer.valueOf(args[4]),
-						Integer.valueOf(args[5]), Integer.valueOf(args[6])));
+			} else if (args.length > 1) {
+				if (args[0].equalsIgnoreCase("set")) {
+					World world = getServer().getWorld("world");
+					CubedArea newArea = new CubedArea(world,
+							Integer.valueOf(args[1]), Integer.valueOf(args[2]),
+							Integer.valueOf(args[3]), Integer.valueOf(args[4]),
+							Integer.valueOf(args[5]), Integer.valueOf(args[6]));
+					areaManager.add(newArea);
+					sender.sendMessage("Added " + newArea);
+					return true;
+				}
 			}
-			return true;
 		}
 		return false;
 	}
@@ -81,7 +85,7 @@ public class NoSpawn extends JavaPlugin {
 
 	public void detectedSpawn(CreatureSpawnEvent event) {
 		// TODO Auto-generated method stub
-		if (areaManager.isInAnArea(event.getEntity().getLocation())) {
+		if (areaManager.contains(event.getEntity().getLocation())) {
 			event.setCancelled(true);
 		}
 	}

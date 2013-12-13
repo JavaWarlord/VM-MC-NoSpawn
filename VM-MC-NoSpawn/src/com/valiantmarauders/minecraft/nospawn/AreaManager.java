@@ -10,7 +10,6 @@ import java.util.List;
 
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.valiantmarauders.minecraft.location.CubedArea;
@@ -43,7 +42,6 @@ public class AreaManager {
 				@SuppressWarnings("unchecked")
 				ArrayList<String> result = (ArrayList<String>) object;
 				for (String areaText : result) {
-					// areaText = areaText.substring(1, areaText.length() - 1);
 					String[] values = areaText.split(",");
 					areas.add(new CubedArea(plugin.getServer().getWorld(
 							values[0]), Integer.valueOf(values[1]), Integer
@@ -91,13 +89,13 @@ public class AreaManager {
 	public void add(CubedArea cubedArea) {
 		// TODO Auto-generated method stub
 		areas.add(cubedArea);
+		plugin.getLogger().info("Added new area: " + cubedArea);
 	}
 
-	public boolean isInAnArea(Location location) {
-		// TODO Auto-generated method stub
+	public boolean contains(Location location) {
 		// TODO Auto-generated method stub
 		for (CubedArea area : areas) {
-			if (area.containsLocation(location)) {
+			if (area.contains(location)) {
 				return true;
 			}
 		}
