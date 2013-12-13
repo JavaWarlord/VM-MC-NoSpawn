@@ -64,7 +64,7 @@ public class NoSpawn extends JavaPlugin {
 		 * Test code
 		 */
 		areas.add(new CubedArea(getServer().getWorld("newWorld"), 0, 60, 0,
-				240, 80, 240));
+				240, 115, 240));
 		areas.add(new CubedArea(getServer().getWorld("newWorld"), 0, 60, 0,
 				240, 0, 240));
 		/*
