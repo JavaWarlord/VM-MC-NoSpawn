@@ -38,7 +38,7 @@ import com.valiantmarauders.minecraft.location.CubedArea;
  */
 public class NoSpawn extends JavaPlugin {
 
-	private List<CubedArea> areas;
+	// private List<CubedArea> areas;
 	private AreaManager areaManager;
 
 	public void onEnable() {
@@ -47,14 +47,6 @@ public class NoSpawn extends JavaPlugin {
 		PluginManager pm = this.getServer().getPluginManager();
 		pm.registerEvents(new MobSpawnListener(this), this);
 		areaManager = new AreaManager(this);
-		areas = areaManager.load();
-		if (areas == null) {
-			areas = new ArrayList<CubedArea>();
-			areas.add(new CubedArea(getServer().getWorld("world"), 11, 12, 13,
-					14, 15, 16));
-			// loadAreas(getConfig(), areas);
-		}
-		displayAreas();
 	}
 
 	public boolean onCommand(CommandSender sender, Command cmd, String label,
@@ -69,53 +61,28 @@ public class NoSpawn extends JavaPlugin {
 					getServer().broadcastMessage(
 							"This is just a test command!!!");
 				} else if (args[0].equalsIgnoreCase("show")) {
-					displayAreas();
+					areaManager.display(sender);
 				}
 			} else if (args[0].equalsIgnoreCase("set")) {
-				getServer().broadcastMessage("Setting");
-				areas.add(new CubedArea(getServer().getWorld("world"),
 
-				Integer.valueOf(args[1]), Integer.valueOf(args[2]), Integer
-						.valueOf(args[3]), Integer.valueOf(args[4]), Integer
-						.valueOf(args[5]), Integer.valueOf(args[6])));
-				displayAreas();
+				areaManager.add(new CubedArea(getServer().getWorld("world"),
+						Integer.valueOf(args[1]), Integer.valueOf(args[2]),
+						Integer.valueOf(args[3]), Integer.valueOf(args[4]),
+						Integer.valueOf(args[5]), Integer.valueOf(args[6])));
 			}
 			return true;
 		}
 		return false;
 	}
 
-	private void displayAreas() {
-		// TODO Auto-generated method stub
-		getLogger().info("Areas");
-		for (CubedArea a : areas) {
-			getLogger().info(a.toString());
-		}
-	}
-
 	public void onDisable() {
-		areaManager.save(areas);
+		areaManager.save();
 	}
 
 	public void detectedSpawn(CreatureSpawnEvent event) {
 		// TODO Auto-generated method stub
-		if (isInNoSpawnArea(event.getEntity())) {
+		if (areaManager.isInAnArea(event.getEntity().getLocation())) {
 			event.setCancelled(true);
 		}
-	}
-
-	private boolean isInNoSpawnArea(LivingEntity entity) {
-		// TODO Auto-generated method stub
-		for (CubedArea area : areas) {
-			if (area.containsLocation(entity.getLocation())) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	public List<CubedArea> getAreas() {
-		// TODO Auto-generated method stub
-		return areas;
 	}
 }

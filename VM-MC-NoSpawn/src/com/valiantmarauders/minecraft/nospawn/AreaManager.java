@@ -8,6 +8,9 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.Location;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.valiantmarauders.minecraft.location.CubedArea;
@@ -16,11 +19,16 @@ public class AreaManager {
 
 	private JavaPlugin plugin;
 	private String fileName;
+	private List<CubedArea> areas;
 
 	public AreaManager(JavaPlugin plugin) {
 		// TODO Auto-generated constructor stub
 		this.plugin = plugin;
 		fileName = "Areas.dat";
+		areas = load();
+		if (areas == null) {
+			areas = new ArrayList<CubedArea>();
+		}
 	}
 
 	public List<CubedArea> load() {
@@ -32,6 +40,7 @@ public class AreaManager {
 				ObjectInputStream ois = new ObjectInputStream(
 						new FileInputStream(file.getAbsolutePath()));
 				Object object = ois.readObject();
+				@SuppressWarnings("unchecked")
 				ArrayList<String> result = (ArrayList<String>) object;
 				for (String areaText : result) {
 					// areaText = areaText.substring(1, areaText.length() - 1);
@@ -52,7 +61,7 @@ public class AreaManager {
 		return areas;
 	}
 
-	public void save(List<CubedArea> areas) {
+	public void save() {
 		// TODO Auto-generated method stub
 		File file = new File("plugins/NoSpawn/" + fileName);
 		try {
@@ -69,5 +78,29 @@ public class AreaManager {
 			plugin.getLogger().warning("Error writing " + fileName);
 			plugin.getLogger().warning(e.toString());
 		}
+	}
+
+	public void display(CommandSender sender) {
+		// TODO Auto-generated method stub
+		plugin.getLogger().info("Areas");
+		for (CubedArea a : areas) {
+			sender.sendMessage(a.toString());
+		}
+	}
+
+	public void add(CubedArea cubedArea) {
+		// TODO Auto-generated method stub
+		areas.add(cubedArea);
+	}
+
+	public boolean isInAnArea(Location location) {
+		// TODO Auto-generated method stub
+		// TODO Auto-generated method stub
+		for (CubedArea area : areas) {
+			if (area.containsLocation(location)) {
+				return true;
+			}
+		}
+		return false;
 	}
 }
