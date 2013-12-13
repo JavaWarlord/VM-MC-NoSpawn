@@ -3,3 +3,6 @@ worlds:
     areas:
       - 0 60 0 240 80 240
       - 0 0 0 240 60 240
+  world_nether:
+    areas:
+      - 1 2 3 4 5 6

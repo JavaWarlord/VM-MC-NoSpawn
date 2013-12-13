@@ -46,6 +46,25 @@ public class CubedArea {
 		return false;
 	}
 
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("[");
+		sb.append(x1);
+		sb.append(",");
+		sb.append(y1);
+		sb.append(",");
+		sb.append(z1);
+		sb.append("]");
+		sb.append("[");
+		sb.append(x2);
+		sb.append(",");
+		sb.append(y2);
+		sb.append(",");
+		sb.append(z2);
+		sb.append("]");
+		return sb.toString();
+	}
+
 	public World getWorld() {
 		return world;
 	}

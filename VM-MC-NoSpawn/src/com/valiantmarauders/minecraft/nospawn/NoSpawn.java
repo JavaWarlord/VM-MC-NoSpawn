@@ -6,6 +6,7 @@ import java.util.Set;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.plugin.PluginManager;
@@ -16,7 +17,7 @@ import com.valiantmarauders.minecraft.location.CubedArea;
 /**
  * 
  * @author JavaWarlord
- * @version 0.1
+ * @version 0.3
  * 
  *          v0.1 - Working NoSpawn area with constant values.
  * 
@@ -41,32 +42,56 @@ public class NoSpawn extends JavaPlugin {
 
 	public void onEnable() {
 		// Save a copy of the default config.yml if one is not there
-		// this.saveDefaultConfig();
+		this.saveDefaultConfig();
 		PluginManager pm = this.getServer().getPluginManager();
 		pm.registerEvents(new MobSpawnListener(this), this);
 		areas = new ArrayList<CubedArea>();
 
-		// Set<String> keys = getConfig().getKeys(false);
-		// getLogger().info("Size: " + keys.size());
-		// for (String s : keys)
-		// getLogger().info(s);
-		//
-		// keys = getConfig().getKeys(true);
-		// getLogger().info("Size: " + keys.size());
-		// for (String s : keys)
-		// getLogger().info(s);
+		// Get list of worlds in worlds section.
+		getLogger().info("----- KEY info -----");
+		FileConfiguration config = getConfig();
 
-		// Map<String, Object> values = this.getConfig()
-		// .getConfigurationSection("worlds.world.areas").getValues(false);
-		// getLogger().info("Size: " + values.size());
+		// Get a Set of all the worlds
+		Set<String> worlds = getConfig().getConfigurationSection("worlds")
+				.getKeys(false);
+		getLogger().info("Read: " + worlds.size() + " worlds.");
+		// For each world, get the defined areas
+		for (String world : worlds) {
+			getLogger().info(world);
+			String areasInWorld = config
+					.getString("worlds." + world + ".areas");
+			// Strip the brackets
+			areasInWorld = areasInWorld.substring(1, areasInWorld.length() - 1);
+			// getLogger().info(areasInWorld);
+			// areasInWorld = areasInWorld.replace(" ", " ");
+			// getLogger().info(areasInWorld);
+			String[] cubes = areasInWorld.split(",");
+			for (int i = 0; i < cubes.length; i++) {
+				cubes[i] = cubes[i].trim();
+				// getLogger().info(cubes[i]);
+				String[] points = cubes[i].split(" ");
+				// for (int j = 0; j < points.length; j++) {
+				// getLogger().info("[" + points[j] + "]");
+				areas.add(new CubedArea(getServer().getWorld(world), Integer
+						.valueOf(points[0].trim()), Integer.valueOf(points[1]
+						.trim()), Integer.valueOf(points[2].trim()), Integer
+						.valueOf(points[3].trim()), Integer.valueOf(points[4]
+						.trim()), Integer.valueOf(points[5].trim())));
+				// }
 
+			}
+		}
+		getLogger().info("--------------------");
+		for (CubedArea a : areas) {
+			getLogger().info(a.toString());
+		}
 		/*
 		 * Test code
 		 */
-		areas.add(new CubedArea(getServer().getWorld("newWorld"), 0, 60, 0,
-				240, 115, 240));
-		areas.add(new CubedArea(getServer().getWorld("newWorld"), 0, 60, 0,
-				240, 0, 240));
+		// areas.add(new CubedArea(getServer().getWorld("newWorld"), 0, 60, 0,
+		// 240, 115, 240));
+		// areas.add(new CubedArea(getServer().getWorld("newWorld"), 0, 60, 0,
+		// 240, 0, 240));
 		/*
 		 * Test code
 		 */
@@ -81,8 +106,8 @@ public class NoSpawn extends JavaPlugin {
 					getServer().getPluginManager().disablePlugin(this);
 					getServer().getPluginManager().enablePlugin(this);
 				} else if (args[0].equalsIgnoreCase("test")) {
-					getServer()
-							.broadcastMessage("This is just a test command!");
+					getServer().broadcastMessage(
+							"This is just a test command!!!");
 				}
 			}
 			// If the player typed basic then do the following...
