@@ -1,8 +1,0 @@
-worlds:
-  world:
-    areas:
-    # - x1 y1 z1 x2 y2 z2
-      - 0 60 0 240 80 240
-      - 500 63 500 1000 70 1000
-  world_nether:
-    areas:

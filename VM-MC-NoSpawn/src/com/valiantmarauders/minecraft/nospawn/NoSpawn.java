@@ -2,11 +2,9 @@ package com.valiantmarauders.minecraft.nospawn;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.plugin.PluginManager;
@@ -17,13 +15,15 @@ import com.valiantmarauders.minecraft.location.CubedArea;
 /**
  * 
  * @author JavaWarlord
- * @version 0.3
+ * @version 0.35
  * 
  *          v0.1 - Working NoSpawn area with constant values.
  * 
  *          v0.2 - Multiple NoSpawn areas
  * 
- *          v0.3 - Read areas from config.yml
+ *          v0.3 - Read areas from file
+ * 
+ *          v0.35 - Write areas to file
  * 
  *          v0.4 - Set boundaries of areas from inside game
  * 
@@ -39,60 +39,22 @@ import com.valiantmarauders.minecraft.location.CubedArea;
 public class NoSpawn extends JavaPlugin {
 
 	private List<CubedArea> areas;
-	private ConfigManager configManager;
+	private AreaManager areaManager;
 
 	public void onEnable() {
 		// Save a copy of the default config.yml if one is not there
-		this.saveDefaultConfig();
+		// this.saveDefaultConfig();
 		PluginManager pm = this.getServer().getPluginManager();
 		pm.registerEvents(new MobSpawnListener(this), this);
-		configManager = new ConfigManager(this);
+		areaManager = new AreaManager(this);
+		areas = areaManager.load();
 		if (areas == null) {
 			areas = new ArrayList<CubedArea>();
-			loadAreas(getConfig(), areas);
+			areas.add(new CubedArea(getServer().getWorld("world"), 11, 12, 13,
+					14, 15, 16));
+			// loadAreas(getConfig(), areas);
 		}
-		for (CubedArea a : areas) {
-			getLogger().info(a.toString());
-		}
-	}
-
-	private void loadAreas(FileConfiguration config, List<CubedArea> areas) {
-		// TODO Auto-generated method stub
-		// Get a Set of all the worlds
-		Set<String> worlds = getConfig().getConfigurationSection("worlds")
-				.getKeys(false);
-		getLogger().info("Read: " + worlds.size() + " worlds.");
-		// For each world, get the defined areas
-		for (String world : worlds) {
-			getLogger().info(world);
-			String areasInWorld = config
-					.getString("worlds." + world + ".areas");
-			getLogger().info(areasInWorld);
-			if (areasInWorld != null) {
-				// Strip the brackets
-				areasInWorld = areasInWorld.substring(1,
-						areasInWorld.length() - 1);
-				// getLogger().info(areasInWorld);
-				// areasInWorld = areasInWorld.replace(" ", " ");
-				// getLogger().info(areasInWorld);
-				String[] cubes = areasInWorld.split(",");
-				for (int i = 0; i < cubes.length; i++) {
-					cubes[i] = cubes[i].trim();
-					// getLogger().info(cubes[i]);
-					String[] points = cubes[i].split(" ");
-					// for (int j = 0; j < points.length; j++) {
-					// getLogger().info("[" + points[j] + "]");
-					this.areas.add(new CubedArea(getServer().getWorld(world),
-							Integer.valueOf(points[0].trim()), Integer
-									.valueOf(points[1].trim()), Integer
-									.valueOf(points[2].trim()), Integer
-									.valueOf(points[3].trim()), Integer
-									.valueOf(points[4].trim()), Integer
-									.valueOf(points[5].trim())));
-					// }
-				}
-			}
-		}
+		displayAreas();
 	}
 
 	public boolean onCommand(CommandSender sender, Command cmd, String label,
@@ -106,32 +68,39 @@ public class NoSpawn extends JavaPlugin {
 				} else if (args[0].equalsIgnoreCase("test")) {
 					getServer().broadcastMessage(
 							"This is just a test command!!!");
+				} else if (args[0].equalsIgnoreCase("show")) {
+					displayAreas();
 				}
+			} else if (args[0].equalsIgnoreCase("set")) {
+				getServer().broadcastMessage("Setting");
+				areas.add(new CubedArea(getServer().getWorld("world"),
+
+				Integer.valueOf(args[1]), Integer.valueOf(args[2]), Integer
+						.valueOf(args[3]), Integer.valueOf(args[4]), Integer
+						.valueOf(args[5]), Integer.valueOf(args[6])));
+				displayAreas();
 			}
-			// If the player typed basic then do the following...
-			// doSomething
 			return true;
-		} // If this has happened the function will return true.
-			// If this hasn't happened the a value of false will be returned.
+		}
 		return false;
 	}
 
+	private void displayAreas() {
+		// TODO Auto-generated method stub
+		getLogger().info("Areas");
+		for (CubedArea a : areas) {
+			getLogger().info(a.toString());
+		}
+	}
+
 	public void onDisable() {
-		configManager.saveAreas();
+		areaManager.save(areas);
 	}
 
 	public void detectedSpawn(CreatureSpawnEvent event) {
 		// TODO Auto-generated method stub
-		// getLogger().info(
-		// event.getEntity() + " at "
-		// + event.getEntity().getLocation().getX() + ","
-		// + event.getEntity().getLocation().getY() + ","
-		// + event.getEntity().getLocation().getZ());
 		if (isInNoSpawnArea(event.getEntity())) {
 			event.setCancelled(true);
-			// getLogger().info("In");
-		} else {
-			// getLogger().info("Out");
 		}
 	}
 
