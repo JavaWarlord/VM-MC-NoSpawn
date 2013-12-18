@@ -14,7 +14,7 @@ import com.valiantmarauders.minecraft.location.CubedArea;
 /**
  * 
  * @author JavaWarlord
- * @version 0.35
+ * @version 0.40
  * 
  *          v0.10 - Working NoSpawn area with constant values.
  * 
