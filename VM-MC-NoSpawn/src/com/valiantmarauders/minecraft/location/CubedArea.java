@@ -33,12 +33,12 @@ public class CubedArea {
 
 	public CubedArea(World world, Location location1, Location location2) {
 		// TODO Auto-generated constructor stub
-		this.x1 = Math.min(location1.getBlockX(), location2.getBlockX());
-		this.x2 = Math.max(location1.getBlockX(), location2.getBlockX());
-		this.y1 = Math.min(location1.getBlockY(), location2.getBlockY());
-		this.y2 = Math.max(location1.getBlockY(), location2.getBlockY());
-		this.z1 = Math.min(location1.getBlockZ(), location2.getBlockZ());
-		this.z2 = Math.max(location1.getBlockZ(), location2.getBlockZ());
+		this(world, Math.min(location1.getBlockX(), location2.getBlockX()),
+				Math.min(location1.getBlockY(), location2.getBlockY()), Math
+						.min(location1.getBlockZ(), location2.getBlockZ()),
+				Math.max(location1.getBlockX(), location2.getBlockX()), Math
+						.max(location1.getBlockY(), location2.getBlockY()),
+				Math.max(location1.getBlockZ(), location2.getBlockZ()));
 	}
 
 	public boolean contains(Location location) {
