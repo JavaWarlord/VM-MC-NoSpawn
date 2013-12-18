@@ -8,4 +8,7 @@ commands:
   nospawn:
     description: Main command
     aliases: [nosp]
-    usage: /<command> [parameters]
+    usage: 
+      /<command> [parameters]
+      /<command> pos [1 or 2] - set current location as this position
+      /<command> set - create an area from two positions

@@ -7,6 +7,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.plugin.java.JavaPlugin;
 
 /**
  * MobSpawnListener
@@ -17,15 +18,15 @@ import org.bukkit.event.entity.CreatureSpawnEvent;
  */
 public class MobSpawnListener implements Listener {
 
-	private NoSpawn plugin;
+	private JavaPlugin plugin;
 
-	public MobSpawnListener(NoSpawn plugin) {
+	public MobSpawnListener(JavaPlugin plugin) {
 		// TODO Auto-generated constructor stub
 		this.plugin = plugin;
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onCreatureSpawn(CreatureSpawnEvent event) {
-		plugin.detectedSpawn(event);
+		((NoSpawn) plugin).detectedSpawn(event);
 	}
 }
