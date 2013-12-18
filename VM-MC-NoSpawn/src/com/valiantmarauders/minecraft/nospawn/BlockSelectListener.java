@@ -13,18 +13,20 @@ import com.valiantmarauders.minecraft.common.BlockSelector;
 
 public class BlockSelectListener implements BlockSelector, Listener {
 	private JavaPlugin plugin;
+	private Material tool;
 	private Block block1 = null;
 	private Block block2 = null;
 
-	public BlockSelectListener(JavaPlugin plugin) {
+	public BlockSelectListener(JavaPlugin plugin, Material tool) {
 		// TODO Auto-generated constructor stub
 		this.plugin = plugin;
+		this.tool = tool;
 	}
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.LOW)
 	public void onPlayerInteract(PlayerInteractEvent event) {
 		if (event.getItem() != null) {
-			if (event.getItem().getType() == Material.ARROW) {
+			if (event.getItem().getType() == tool) {
 				if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
 					block1 = event.getClickedBlock();
 					event.getPlayer().sendMessage(
@@ -76,5 +78,17 @@ public class BlockSelectListener implements BlockSelector, Listener {
 			block1 = block;
 		else
 			block2 = block;
+	}
+
+	@Override
+	public void setSelectionTool(Material tool) {
+		// TODO Auto-generated method stub
+		this.tool = tool;
+	}
+
+	@Override
+	public Material getSelectionTool() {
+		// TODO Auto-generated method stub
+		return tool;
 	}
 }

@@ -1,6 +1,7 @@
 package com.valiantmarauders.minecraft.nospawn;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -48,7 +49,7 @@ public class NoSpawn extends JavaPlugin {
 		// this.saveDefaultConfig();
 		PluginManager pm = this.getServer().getPluginManager();
 		msl = new MobSpawnListener(this);
-		bsl = new BlockSelectListener(this);
+		bsl = new BlockSelectListener(this, Material.ARROW);
 		pm.registerEvents(msl, this);
 		pm.registerEvents(bsl, this);
 		areaManager = new AreaManager(this);
@@ -72,9 +73,9 @@ public class NoSpawn extends JavaPlugin {
 					return true;
 				} else if (args[0].equalsIgnoreCase("set")) {
 					areaManager.add(new CubedArea(
-							getServer().getWorld("world"), bsl.getSelectedBlock(1)
-									.getLocation(), bsl.getSelectedBlock(2)
-									.getLocation()));
+							getServer().getWorld("world"), bsl
+									.getSelectedBlock(1).getLocation(), bsl
+									.getSelectedBlock(2).getLocation()));
 					return true;
 				}
 			} else if (args.length == 2) {
