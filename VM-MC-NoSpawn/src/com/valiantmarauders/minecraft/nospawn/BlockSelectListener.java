@@ -14,70 +14,40 @@ import com.valiantmarauders.minecraft.common.BlockSelector;
 public class BlockSelectListener implements BlockSelector, Listener {
 	private JavaPlugin plugin;
 	private Material tool;
-	private Block block1 = null;
-	private Block block2 = null;
+	// private Block block1 = null;
+	// private Block block2 = null;
+	private SelectionManager selectionManager;
 
-	public BlockSelectListener(JavaPlugin plugin, Material tool) {
+	public BlockSelectListener(JavaPlugin plugin, Material tool,
+			SelectionManager selectionManager) {
 		// TODO Auto-generated constructor stub
 		this.plugin = plugin;
 		this.tool = tool;
+		this.selectionManager = selectionManager;
 	}
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.LOW)
 	public void onPlayerInteract(PlayerInteractEvent event) {
 		if (event.getItem() != null) {
 			if (event.getItem().getType() == tool) {
+				Block block = event.getClickedBlock();
+				int index = 0;
 				if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
-					block1 = event.getClickedBlock();
-					event.getPlayer().sendMessage(
-							"Point 1: " + block1.getX() + "," + block1.getY()
-									+ "," + block1.getZ());
-					plugin.getLogger().info(
-							event.getPlayer() + " selected block "
-									+ block1.getX() + "," + block1.getY() + ","
-									+ block1.getZ());
+					index = 1;
 				} else if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-					block2 = event.getClickedBlock();
-					event.getPlayer().sendMessage(
-							"Point 2: " + block2.getX() + "," + block2.getY()
-									+ "," + block2.getZ());
-					plugin.getLogger().info(
-							event.getPlayer() + " selected block "
-									+ block1.getX() + "," + block1.getY() + ","
-									+ block1.getZ());
+					index = 2;
 				}
+				selectionManager.add(event.getPlayer(), block.getLocation(),
+						index);
+
+				event.getPlayer().sendMessage(
+						"Point " + index + ": " + block.getX() + ","
+								+ block.getY() + "," + block.getZ());
+				plugin.getLogger().info(
+						event.getPlayer() + " selected block " + block.getX()
+								+ "," + block.getY() + "," + block.getZ());
 			}
 		}
-	}
-
-	@Override
-	public Block getSelectedBlock() {
-		// TODO Auto-generated method stub
-		return block1;
-	}
-
-	@Override
-	public Block getSelectedBlock(int index) {
-		// TODO Auto-generated method stub
-		if (index == 1)
-			return block1;
-		else
-			return block2;
-	}
-
-	@Override
-	public void setSelectedBlock(Block block) {
-		// TODO Auto-generated method stub
-		block1 = block;
-	}
-
-	@Override
-	public void setSelectedBlock(int index, Block block) {
-		// TODO Auto-generated method stub
-		if (index == 1)
-			block1 = block;
-		else
-			block2 = block;
 	}
 
 	@Override

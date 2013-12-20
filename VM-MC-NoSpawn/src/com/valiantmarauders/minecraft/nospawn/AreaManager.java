@@ -12,13 +12,13 @@ import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.valiantmarauders.minecraft.location.CubedArea;
+import com.valiantmarauders.minecraft.location.Cuboid;
 
 public class AreaManager {
 
 	private JavaPlugin plugin;
 	private String fileName;
-	private List<CubedArea> areas;
+	private List<Cuboid> areas;
 
 	public AreaManager(JavaPlugin plugin) {
 		// TODO Auto-generated constructor stub
@@ -26,14 +26,14 @@ public class AreaManager {
 		fileName = "Areas.dat";
 		areas = load();
 		if (areas == null) {
-			areas = new ArrayList<CubedArea>();
+			areas = new ArrayList<Cuboid>();
 		}
 	}
 
-	public List<CubedArea> load() {
+	public List<Cuboid> load() {
 		plugin.getLogger().info("Loading areas");
 		File file = new File("plugins/NoSpawn/" + fileName);
-		List<CubedArea> areas = new ArrayList<CubedArea>();
+		List<Cuboid> areas = new ArrayList<Cuboid>();
 		if (file.exists()) {
 			try {
 				ObjectInputStream ois = new ObjectInputStream(
@@ -43,10 +43,12 @@ public class AreaManager {
 				ArrayList<String> result = (ArrayList<String>) object;
 				for (String areaText : result) {
 					String[] values = areaText.split(",");
-					areas.add(new CubedArea(plugin.getServer().getWorld(
-							values[0]), Integer.valueOf(values[1]), Integer
-							.valueOf(values[2]), Integer.valueOf(values[3]),
-							Integer.valueOf(values[4]), Integer
+					areas.add(new Cuboid(
+							plugin.getServer().getWorld(values[0]), Integer
+									.valueOf(values[1]), Integer
+									.valueOf(values[2]), Integer
+									.valueOf(values[3]), Integer
+									.valueOf(values[4]), Integer
 									.valueOf(values[5]), Integer
 									.valueOf(values[6])));
 				}
@@ -66,7 +68,7 @@ public class AreaManager {
 			ObjectOutputStream oos = new ObjectOutputStream(
 					new FileOutputStream(file.getAbsolutePath()));
 			ArrayList<String> format = new ArrayList<String>();
-			for (CubedArea area : areas) {
+			for (Cuboid area : areas) {
 				format.add(area.toString());
 			}
 			oos.writeObject(format);
@@ -81,20 +83,19 @@ public class AreaManager {
 	public void display(CommandSender sender) {
 		// TODO Auto-generated method stub
 		plugin.getLogger().info("Areas");
-		for (CubedArea a : areas) {
+		for (Cuboid a : areas) {
 			sender.sendMessage(a.toString());
 		}
 	}
 
-	public void add(CubedArea cubedArea) {
+	public boolean add(Cuboid cuboid) {
 		// TODO Auto-generated method stub
-		areas.add(cubedArea);
-		plugin.getLogger().info("Added new area: " + cubedArea);
+		return areas.add(cuboid);
 	}
 
 	public boolean contains(Location location) {
 		// TODO Auto-generated method stub
-		for (CubedArea area : areas) {
+		for (Cuboid area : areas) {
 			if (area.contains(location)) {
 				return true;
 			}
