@@ -9,9 +9,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.valiantmarauders.minecraft.common.BlockSelector;
-
-public class BlockSelectListener implements BlockSelector, Listener {
+public class BlockSelectListener implements Listener {
 	private JavaPlugin plugin;
 	private Material tool;
 	private SelectionManager selectionManager;
@@ -43,13 +41,11 @@ public class BlockSelectListener implements BlockSelector, Listener {
 		}
 	}
 
-	@Override
 	public void setSelectionTool(Material tool) {
 		// TODO Auto-generated method stub
 		this.tool = tool;
 	}
 
-	@Override
 	public Material getSelectionTool() {
 		// TODO Auto-generated method stub
 		return tool;
