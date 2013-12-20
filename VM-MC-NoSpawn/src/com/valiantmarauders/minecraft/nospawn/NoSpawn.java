@@ -5,6 +5,7 @@ import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.valiantmarauders.minecraft.block.BlockChangeDatabase;
 import com.valiantmarauders.minecraft.command.CommandHandler;
 
 /**
@@ -37,6 +38,7 @@ public class NoSpawn extends JavaPlugin {
 
 	private AreaManager areaManager;
 	private SelectionManager selectionManager;
+	private BlockChangeDatabase blockDB;
 
 	public AreaManager getAreaManager() {
 		return areaManager;
@@ -52,6 +54,7 @@ public class NoSpawn extends JavaPlugin {
 		PluginManager pm = this.getServer().getPluginManager();
 		areaManager = new AreaManager(this);
 		selectionManager = new SelectionManager(this);
+		blockDB = new NoSpawnBlockChangeDatabase(this);
 		pm.registerEvents(new MobSpawnListener(this), this);
 		pm.registerEvents(new BlockSelectListener(this, Material.ARROW,
 				selectionManager), this);
@@ -66,6 +69,7 @@ public class NoSpawn extends JavaPlugin {
 		handler.register("set",
 				new SetArea(this, areaManager, selectionManager));
 		handler.register("remove", new RemoveArea(this, areaManager));
+		handler.register("show", new ShowAreas(this, areaManager));
 		getCommand("nosp").setExecutor(handler);
 		getCommand("nospawn").setExecutor(handler);
 	}
