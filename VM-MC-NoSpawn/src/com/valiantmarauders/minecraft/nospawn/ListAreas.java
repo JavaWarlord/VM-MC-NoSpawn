@@ -6,14 +6,14 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.valiantmarauders.minecraft.command.CommandInterface;
 
-public class ShowAreas implements CommandInterface {
+public class ListAreas implements CommandInterface {
 
 	private JavaPlugin plugin;
 	private AreaManager areaManager;
 
-	public ShowAreas(JavaPlugin plugin, AreaManager areaManager) {
+	public ListAreas(JavaPlugin plugin, AreaManager areaManager) {
 		// TODO Auto-generated constructor stub
-		this.plugin = plugin;
+		this.setPlugin(plugin);
 		this.areaManager = areaManager;
 	}
 
@@ -23,5 +23,13 @@ public class ShowAreas implements CommandInterface {
 		// TODO Auto-generated method stub
 		areaManager.display(sender);
 		return false;
+	}
+
+	public JavaPlugin getPlugin() {
+		return plugin;
+	}
+
+	public void setPlugin(JavaPlugin plugin) {
+		this.plugin = plugin;
 	}
 }

@@ -14,14 +14,12 @@ import com.valiantmarauders.minecraft.common.BlockSelector;
 public class BlockSelectListener implements BlockSelector, Listener {
 	private JavaPlugin plugin;
 	private Material tool;
-	// private Block block1 = null;
-	// private Block block2 = null;
 	private SelectionManager selectionManager;
 
 	public BlockSelectListener(JavaPlugin plugin, Material tool,
 			SelectionManager selectionManager) {
 		// TODO Auto-generated constructor stub
-		this.plugin = plugin;
+		this.setPlugin(plugin);
 		this.tool = tool;
 		this.selectionManager = selectionManager;
 	}
@@ -29,7 +27,7 @@ public class BlockSelectListener implements BlockSelector, Listener {
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.LOW)
 	public void onPlayerInteract(PlayerInteractEvent event) {
 		if (event.getItem() != null) {
-			if (event.getItem().getType() == tool) {
+			if (event.getItem().getType() == getSelectionTool()) {
 				Block block = event.getClickedBlock();
 				int index = 0;
 				if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
@@ -37,15 +35,10 @@ public class BlockSelectListener implements BlockSelector, Listener {
 				} else if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
 					index = 2;
 				}
-				selectionManager.add(event.getPlayer(), block.getLocation(),
-						index);
-
-				event.getPlayer().sendMessage(
-						"Point " + index + ": " + block.getX() + ","
-								+ block.getY() + "," + block.getZ());
-				plugin.getLogger().info(
-						event.getPlayer() + " selected block " + block.getX()
-								+ "," + block.getY() + "," + block.getZ());
+				if (selectionManager != null) {
+					selectionManager.update(event.getPlayer(),
+							block.getLocation(), index);
+				}
 			}
 		}
 	}
@@ -60,5 +53,13 @@ public class BlockSelectListener implements BlockSelector, Listener {
 	public Material getSelectionTool() {
 		// TODO Auto-generated method stub
 		return tool;
+	}
+
+	public JavaPlugin getPlugin() {
+		return plugin;
+	}
+
+	public void setPlugin(JavaPlugin plugin) {
+		this.plugin = plugin;
 	}
 }

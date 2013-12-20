@@ -10,7 +10,7 @@ import com.valiantmarauders.minecraft.command.CommandHandler;
 /**
  * 
  * @author JavaWarlord
- * @version 0.45
+ * @version 0.50
  * 
  *          v0.10 - Working NoSpawn area with constant values.
  * 
@@ -36,6 +36,7 @@ import com.valiantmarauders.minecraft.command.CommandHandler;
 public class NoSpawn extends JavaPlugin {
 
 	private AreaManager areaManager;
+	private SelectionManager selectionManager;
 
 	public AreaManager getAreaManager() {
 		return areaManager;
@@ -48,7 +49,6 @@ public class NoSpawn extends JavaPlugin {
 	// private MobSpawnListener msl;
 	// private BlockSelectListener bsl;
 	// private HashMap<String, CommandExecutor> commands;
-	private SelectionManager selectionManager;
 
 	public void onEnable() {
 		// Save a copy of the default config.yml if one is not there
@@ -58,10 +58,11 @@ public class NoSpawn extends JavaPlugin {
 		// msl = new MobSpawnListener(this);
 		// bsl = new BlockSelectListener(this, Material.ARROW,
 		// selectionManager);
+		areaManager = new AreaManager(this);
+		selectionManager = new SelectionManager(this);
 		pm.registerEvents(new MobSpawnListener(this), this);
 		pm.registerEvents(new BlockSelectListener(this, Material.ARROW,
 				selectionManager), this);
-		areaManager = new AreaManager(this);
 		initializeCommands();
 	}
 
@@ -69,9 +70,10 @@ public class NoSpawn extends JavaPlugin {
 		// TODO Auto-generated method stub
 		CommandHandler handler = new CommandHandler();
 		handler.register("reload", new Reload(this));
-		handler.register("show", new ShowAreas(this, areaManager));
+		handler.register("list", new ListAreas(this, areaManager));
 		handler.register("set",
 				new SetArea(this, areaManager, selectionManager));
+		handler.register("remove", new RemoveArea(this, areaManager));
 		getCommand("nosp").setExecutor(handler);
 		getCommand("nospawn").setExecutor(handler);
 	}
@@ -86,58 +88,4 @@ public class NoSpawn extends JavaPlugin {
 			event.setCancelled(true);
 		}
 	}
-	// @Override
-	// public boolean onCommand(CommandSender sender, Command command,
-	// String label, String[] args) {
-	// if (command.getName().equalsIgnoreCase("nospawn")
-	// || command.getName().equalsIgnoreCase("nosp")) {
-	// CommandExecutor cmdEx = commands.get(args[0]);
-	// if (cmdEx != null) {
-	// return cmdEx.onCommand(sender, command, label, args);
-	// }
-	// }
-	// return false;
-	// }
-
-	// } else if (args[0].equalsIgnoreCase("set")) {
-	// areaManager.add(new CubedArea(
-	// getServer().getWorld("world"), bsl
-	// .getSelectedBlock(1).getLocation(), bsl
-	// .getSelectedBlock(2).getLocation()));
-	// return true;
-	// }
-	// } else if (args.length == 2) {
-	// if (args[0].equalsIgnoreCase("pos")) {
-	// int index = 0;
-	// try {
-	// index = Integer.valueOf(args[1]);
-	// } catch (NumberFormatException e) {
-	// sender.sendMessage("/nosp pos [1 or 2]");
-	// }
-	// if (index < 1 || index > 2) {
-	// return false;
-	// }
-	// if (sender instanceof Player) {
-	// Location playerLoc = ((Player) sender).getLocation();
-	// playerLoc.subtract(0, 1, 0);
-	// bsl.setSelectedBlock(index, playerLoc.getBlock());
-	// sender.sendMessage("Position " + index + " set at "
-	// + playerLoc);
-	// }
-	// }
-	// } else if (args.length > 1) {
-	// if (args[0].equalsIgnoreCase("set")) {
-	// World world = getServer().getWorld("world");
-	// CubedArea newArea = new CubedArea(world,
-	// Integer.valueOf(args[1]), Integer.valueOf(args[2]),
-	// Integer.valueOf(args[3]), Integer.valueOf(args[4]),
-	// Integer.valueOf(args[5]), Integer.valueOf(args[6]));
-	// areaManager.add(newArea);
-	// sender.sendMessage("Added " + newArea);
-	// return true;
-	// }
-	// }
-	// }
-	// return false;
-	// }
 }

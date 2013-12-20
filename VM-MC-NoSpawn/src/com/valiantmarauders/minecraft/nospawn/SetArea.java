@@ -25,7 +25,13 @@ public class SetArea implements CommandInterface {
 			String commandLabel, String[] args) {
 		// TODO Auto-generated method stub
 		Cuboid cuboid = selectionManager.getCuboid(sender);
-		plugin.getLogger().info(sender + " is adding an area. " + cuboid);
-		return areaManager.add(cuboid);
+		if (cuboid == null) {
+			plugin.getLogger().info(sender + " is trying to add a null area. ");
+		} else {
+			sender.sendMessage("Set area: " + cuboid);
+			plugin.getLogger().info(sender + " is adding area " + cuboid);
+			return areaManager.add(cuboid.clone());
+		}
+		return false;
 	}
 }

@@ -69,7 +69,7 @@ public class AreaManager {
 					new FileOutputStream(file.getAbsolutePath()));
 			ArrayList<String> format = new ArrayList<String>();
 			for (Cuboid area : areas) {
-				format.add(area.toString());
+				format.add(area.toSaveFormat());
 			}
 			oos.writeObject(format);
 			oos.flush();
@@ -82,15 +82,25 @@ public class AreaManager {
 
 	public void display(CommandSender sender) {
 		// TODO Auto-generated method stub
-		plugin.getLogger().info("Areas");
-		for (Cuboid a : areas) {
-			sender.sendMessage(a.toString());
+		if (areas.isEmpty()) {
+			sender.sendMessage("There are no defined areas.");
+		} else {
+			sender.sendMessage("Areas");
+			for (Cuboid a : areas) {
+				sender.sendMessage(a.toString());
+			}
 		}
 	}
 
 	public boolean add(Cuboid cuboid) {
 		// TODO Auto-generated method stub
-		return areas.add(cuboid);
+		if (areas.contains(cuboid))
+			return false;
+		else
+			// plugin.getLogger().info("Area exists. );
+			// return areas.add(cuboid.clone());
+			// } else
+			return areas.add(cuboid);
 	}
 
 	public boolean contains(Location location) {
@@ -101,5 +111,25 @@ public class AreaManager {
 			}
 		}
 		return false;
+	}
+
+	public Cuboid getArea(Location location) {
+		// TODO Auto-generated method stub
+		for (Cuboid area : areas) {
+			if (area.contains(location)) {
+				return area;
+			}
+		}
+		return null;
+	}
+
+	public boolean remove(Cuboid area) {
+		// TODO Auto-generated method stub
+		return areas.remove(area);
+	}
+
+	public void removeAll() {
+		// TODO Auto-generated method stub
+		areas.clear();
 	}
 }
