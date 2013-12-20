@@ -24,7 +24,7 @@ public class NoSpawnAreaManager implements CuboidManager {
 	public NoSpawnAreaManager(JavaPlugin plugin) {
 		// TODO Auto-generated constructor stub
 		this.plugin = plugin;
-		fileName = "Areas.dat";
+		fileName = "areas.dat";
 		_cuboids = load();
 		if (_cuboids == null) {
 			_cuboids = new ArrayList<Cuboid>();

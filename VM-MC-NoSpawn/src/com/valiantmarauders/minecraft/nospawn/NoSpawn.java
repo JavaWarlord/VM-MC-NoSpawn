@@ -67,8 +67,8 @@ public class NoSpawn extends JavaPlugin {
 		CommandHandler handler = new CommandHandler();
 		handler.register("reload", new Reload(this));
 		handler.register("list", new ListAreas(this, cuboidManager));
-		handler.register("set",
-				new SetArea(this, cuboidManager, selectionManager));
+		handler.register("set", new SetArea(this, cuboidManager,
+				selectionManager));
 		handler.register("remove", new RemoveArea(this, cuboidManager));
 		handler.register("show", new ShowAreas(this, cuboidManager, blockDB));
 		getCommand("nosp").setExecutor(handler);
@@ -77,6 +77,7 @@ public class NoSpawn extends JavaPlugin {
 
 	public void onDisable() {
 		cuboidManager.save();
+		blockDB.save();
 	}
 
 	public void detectedSpawn(CreatureSpawnEvent event) {
