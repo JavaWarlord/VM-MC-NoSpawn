@@ -21,7 +21,7 @@ public class ShowAreas implements CommandInterface {
 	public ShowAreas(JavaPlugin plugin, AreaManager areaManager,
 			BlockChangeDatabase blockDB) {
 		// TODO Auto-generated constructor stub
-		this.plugin = plugin;
+		this.setPlugin(plugin);
 		this.areaManager = areaManager;
 		this.blockDB = blockDB;
 	}
@@ -40,5 +40,13 @@ public class ShowAreas implements CommandInterface {
 			blockDB.change(block, corner);
 		}
 		return true;
+	}
+
+	public JavaPlugin getPlugin() {
+		return plugin;
+	}
+
+	public void setPlugin(JavaPlugin plugin) {
+		this.plugin = plugin;
 	}
 }

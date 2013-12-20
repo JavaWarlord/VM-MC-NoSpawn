@@ -5,6 +5,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.valiantmarauders.minecraft.block.BlockChangeDatabase;
 import com.valiantmarauders.minecraft.command.CommandInterface;
 import com.valiantmarauders.minecraft.location.Cuboid;
 
@@ -32,6 +33,10 @@ public class RemoveArea implements CommandInterface {
 				Player player = (Player) sender;
 				Cuboid area = areaManager.getArea(player.getLocation());
 				if (area != null) {
+					BlockChangeDatabase blockDB = ((NoSpawn) plugin)
+							.getBlockChangeDatabase();
+					blockDB.restore(area.getLocation1().getBlock());
+					blockDB.restore(area.getLocation2().getBlock());
 					if (areaManager.remove(area)) {
 						player.sendMessage("Area " + area + " removed.");
 						return true;

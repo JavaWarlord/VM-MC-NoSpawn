@@ -84,4 +84,9 @@ public class NoSpawn extends JavaPlugin {
 			event.setCancelled(true);
 		}
 	}
+
+	public BlockChangeDatabase getBlockChangeDatabase() {
+		// TODO Auto-generated method stub
+		return blockDB;
+	}
 }

@@ -9,6 +9,8 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.valiantmarauders.minecraft.block.BlockChangeDatabase;
+
 public class BlockSelectListener implements Listener {
 	private JavaPlugin plugin;
 	private Material tool;
@@ -24,9 +26,9 @@ public class BlockSelectListener implements Listener {
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.LOW)
 	public void onPlayerInteract(PlayerInteractEvent event) {
+		Block block = event.getClickedBlock();
 		if (event.getItem() != null) {
 			if (event.getItem().getType() == getSelectionTool()) {
-				Block block = event.getClickedBlock();
 				int index = 0;
 				if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
 					index = 1;
@@ -36,6 +38,14 @@ public class BlockSelectListener implements Listener {
 				if (selectionManager != null) {
 					selectionManager.update(event.getPlayer(),
 							block.getLocation(), index);
+				}
+			} else {
+				event.getPlayer().sendMessage("Hitting a block.");
+				BlockChangeDatabase blockDB = ((NoSpawn) plugin)
+						.getBlockChangeDatabase();
+				if (blockDB.isChanged(block)) {
+					event.getPlayer().sendMessage("Changing a block.");
+					blockDB.restore(block);
 				}
 			}
 		}
