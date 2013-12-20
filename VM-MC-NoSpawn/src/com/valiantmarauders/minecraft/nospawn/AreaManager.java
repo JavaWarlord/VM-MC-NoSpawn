@@ -97,9 +97,6 @@ public class AreaManager {
 		if (areas.contains(cuboid))
 			return false;
 		else
-			// plugin.getLogger().info("Area exists. );
-			// return areas.add(cuboid.clone());
-			// } else
 			return areas.add(cuboid);
 	}
 

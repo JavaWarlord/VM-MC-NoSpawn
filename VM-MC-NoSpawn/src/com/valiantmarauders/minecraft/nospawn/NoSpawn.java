@@ -46,18 +46,10 @@ public class NoSpawn extends JavaPlugin {
 		this.areaManager = areaManager;
 	}
 
-	// private MobSpawnListener msl;
-	// private BlockSelectListener bsl;
-	// private HashMap<String, CommandExecutor> commands;
-
 	public void onEnable() {
 		// Save a copy of the default config.yml if one is not there
 		// this.saveDefaultConfig();
-		// commands = new HashMap<String, CommandExecutor>();
 		PluginManager pm = this.getServer().getPluginManager();
-		// msl = new MobSpawnListener(this);
-		// bsl = new BlockSelectListener(this, Material.ARROW,
-		// selectionManager);
 		areaManager = new AreaManager(this);
 		selectionManager = new SelectionManager(this);
 		pm.registerEvents(new MobSpawnListener(this), this);
