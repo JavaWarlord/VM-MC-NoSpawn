@@ -10,19 +10,20 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.valiantmarauders.minecraft.block.BlockChangeDatabase;
 import com.valiantmarauders.minecraft.command.CommandInterface;
+import com.valiantmarauders.minecraft.location.CuboidManager;
 import com.valiantmarauders.minecraft.location.Cuboid;
 
 public class ShowAreas implements CommandInterface {
 	private JavaPlugin plugin;
-	private AreaManager areaManager;
+	private CuboidManager cuboidManager;
 	private BlockChangeDatabase blockDB;
 	private final Material corner = Material.GOLD_BLOCK;
 
-	public ShowAreas(JavaPlugin plugin, AreaManager areaManager,
+	public ShowAreas(JavaPlugin plugin, CuboidManager cuboidManager,
 			BlockChangeDatabase blockDB) {
 		// TODO Auto-generated constructor stub
 		this.setPlugin(plugin);
-		this.areaManager = areaManager;
+		this.cuboidManager = cuboidManager;
 		this.blockDB = blockDB;
 	}
 
@@ -31,7 +32,7 @@ public class ShowAreas implements CommandInterface {
 			String commandLabel, String[] args) {
 		// TODO Auto-generated method stub
 		// go through area manager
-		List<Cuboid> areas = areaManager.getAreas();
+		List<Cuboid> areas = cuboidManager.getCuboids();
 		// for each location, in each cuboid, mark the corner with gold
 		for (Cuboid c : areas) {
 			Block block = c.getLocation1().getBlock();

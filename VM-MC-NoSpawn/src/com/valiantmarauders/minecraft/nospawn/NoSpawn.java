@@ -7,6 +7,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.valiantmarauders.minecraft.block.BlockChangeDatabase;
 import com.valiantmarauders.minecraft.command.CommandHandler;
+import com.valiantmarauders.minecraft.location.CuboidManager;
 
 /**
  * 
@@ -36,23 +37,23 @@ import com.valiantmarauders.minecraft.command.CommandHandler;
  */
 public class NoSpawn extends JavaPlugin {
 
-	private AreaManager areaManager;
+	private CuboidManager cuboidManager;
 	private SelectionManager selectionManager;
 	private BlockChangeDatabase blockDB;
 
-	public AreaManager getAreaManager() {
-		return areaManager;
+	public CuboidManager getAreaManager() {
+		return cuboidManager;
 	}
 
-	public void setAreaManager(AreaManager areaManager) {
-		this.areaManager = areaManager;
+	public void setAreaManager(CuboidManager cuboidManager) {
+		this.cuboidManager = cuboidManager;
 	}
 
 	public void onEnable() {
 		// Save a copy of the default config.yml if one is not there
 		// this.saveDefaultConfig();
 		PluginManager pm = this.getServer().getPluginManager();
-		areaManager = new AreaManager(this);
+		cuboidManager = new NoSpawnAreaManager(this);
 		selectionManager = new SelectionManager(this);
 		blockDB = new NoSpawnBlockChangeDatabase(this);
 		pm.registerEvents(new MobSpawnListener(this), this);
@@ -65,22 +66,22 @@ public class NoSpawn extends JavaPlugin {
 		// TODO Auto-generated method stub
 		CommandHandler handler = new CommandHandler();
 		handler.register("reload", new Reload(this));
-		handler.register("list", new ListAreas(this, areaManager));
+		handler.register("list", new ListAreas(this, cuboidManager));
 		handler.register("set",
-				new SetArea(this, areaManager, selectionManager));
-		handler.register("remove", new RemoveArea(this, areaManager));
-		handler.register("show", new ShowAreas(this, areaManager, blockDB));
+				new SetArea(this, cuboidManager, selectionManager));
+		handler.register("remove", new RemoveArea(this, cuboidManager));
+		handler.register("show", new ShowAreas(this, cuboidManager, blockDB));
 		getCommand("nosp").setExecutor(handler);
 		getCommand("nospawn").setExecutor(handler);
 	}
 
 	public void onDisable() {
-		areaManager.save();
+		cuboidManager.save();
 	}
 
 	public void detectedSpawn(CreatureSpawnEvent event) {
 		// TODO Auto-generated method stub
-		if (areaManager.contains(event.getEntity().getLocation())) {
+		if (cuboidManager.contains(event.getEntity().getLocation())) {
 			event.setCancelled(true);
 		}
 	}

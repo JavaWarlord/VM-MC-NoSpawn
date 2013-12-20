@@ -12,24 +12,26 @@ import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.valiantmarauders.minecraft.location.CuboidManager;
 import com.valiantmarauders.minecraft.location.Cuboid;
 
-public class AreaManager {
+public class NoSpawnAreaManager implements CuboidManager {
 
 	private JavaPlugin plugin;
 	private String fileName;
-	private List<Cuboid> areas;
+	private List<Cuboid> _cuboids;
 
-	public AreaManager(JavaPlugin plugin) {
+	public NoSpawnAreaManager(JavaPlugin plugin) {
 		// TODO Auto-generated constructor stub
 		this.plugin = plugin;
 		fileName = "Areas.dat";
-		areas = load();
-		if (areas == null) {
-			areas = new ArrayList<Cuboid>();
+		_cuboids = load();
+		if (_cuboids == null) {
+			_cuboids = new ArrayList<Cuboid>();
 		}
 	}
 
+	@Override
 	public List<Cuboid> load() {
 		plugin.getLogger().info("Loading areas");
 		File file = new File("plugins/NoSpawn/" + fileName);
@@ -61,6 +63,7 @@ public class AreaManager {
 		return areas;
 	}
 
+	@Override
 	public void save() {
 		// TODO Auto-generated method stub
 		File file = new File("plugins/NoSpawn/" + fileName);
@@ -68,7 +71,7 @@ public class AreaManager {
 			ObjectOutputStream oos = new ObjectOutputStream(
 					new FileOutputStream(file.getAbsolutePath()));
 			ArrayList<String> format = new ArrayList<String>();
-			for (Cuboid area : areas) {
+			for (Cuboid area : _cuboids) {
 				format.add(area.toSaveFormat());
 			}
 			oos.writeObject(format);
@@ -80,29 +83,32 @@ public class AreaManager {
 		}
 	}
 
+	@Override
 	public void display(CommandSender sender) {
 		// TODO Auto-generated method stub
-		if (areas.isEmpty()) {
+		if (_cuboids.isEmpty()) {
 			sender.sendMessage("There are no defined areas.");
 		} else {
 			sender.sendMessage("Areas");
-			for (Cuboid a : areas) {
+			for (Cuboid a : _cuboids) {
 				sender.sendMessage(a.toString());
 			}
 		}
 	}
 
+	@Override
 	public boolean add(Cuboid cuboid) {
 		// TODO Auto-generated method stub
-		if (areas.contains(cuboid))
+		if (_cuboids.contains(cuboid))
 			return false;
 		else
-			return areas.add(cuboid);
+			return _cuboids.add(cuboid);
 	}
 
+	@Override
 	public boolean contains(Location location) {
 		// TODO Auto-generated method stub
-		for (Cuboid area : areas) {
+		for (Cuboid area : _cuboids) {
 			if (area.contains(location)) {
 				return true;
 			}
@@ -110,28 +116,32 @@ public class AreaManager {
 		return false;
 	}
 
-	public Cuboid getArea(Location location) {
+	@Override
+	public boolean remove(Cuboid area) {
 		// TODO Auto-generated method stub
-		for (Cuboid area : areas) {
-			if (area.contains(location)) {
-				return area;
+		return _cuboids.remove(area);
+	}
+
+	@Override
+	public void removeAll() {
+		// TODO Auto-generated method stub
+		_cuboids.clear();
+	}
+
+	@Override
+	public List<Cuboid> getCuboids() {
+		// TODO Auto-generated method stub
+		return _cuboids;
+	}
+
+	@Override
+	public Cuboid get(Location location) {
+		// TODO Auto-generated method stub
+		for (Cuboid cuboid : _cuboids) {
+			if (cuboid.contains(location)) {
+				return cuboid;
 			}
 		}
 		return null;
-	}
-
-	public boolean remove(Cuboid area) {
-		// TODO Auto-generated method stub
-		return areas.remove(area);
-	}
-
-	public void removeAll() {
-		// TODO Auto-generated method stub
-		areas.clear();
-	}
-
-	public List<Cuboid> getAreas() {
-		// TODO Auto-generated method stub
-		return areas;
 	}
 }
