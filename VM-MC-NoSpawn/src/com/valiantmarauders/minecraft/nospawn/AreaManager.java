@@ -129,4 +129,9 @@ public class AreaManager {
 		// TODO Auto-generated method stub
 		areas.clear();
 	}
+
+	public List<Cuboid> getAreas() {
+		// TODO Auto-generated method stub
+		return areas;
+	}
 }

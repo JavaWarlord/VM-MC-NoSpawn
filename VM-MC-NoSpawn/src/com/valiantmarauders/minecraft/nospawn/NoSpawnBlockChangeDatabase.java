@@ -10,7 +10,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.valiantmarauders.minecraft.block.BlockChangeDatabase;
 
-public interface BlockChangeDatabasee implements BlockChangeDatabase {
+public class NoSpawnBlockChangeDatabase implements BlockChangeDatabase {
 
 	private JavaPlugin plugin;
 	private Map<Block, Material> blocks;

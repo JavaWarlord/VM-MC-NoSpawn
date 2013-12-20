@@ -69,7 +69,7 @@ public class NoSpawn extends JavaPlugin {
 		handler.register("set",
 				new SetArea(this, areaManager, selectionManager));
 		handler.register("remove", new RemoveArea(this, areaManager));
-		handler.register("show", new ShowAreas(this, areaManager));
+		handler.register("show", new ShowAreas(this, areaManager, blockDB));
 		getCommand("nosp").setExecutor(handler);
 		getCommand("nospawn").setExecutor(handler);
 	}
