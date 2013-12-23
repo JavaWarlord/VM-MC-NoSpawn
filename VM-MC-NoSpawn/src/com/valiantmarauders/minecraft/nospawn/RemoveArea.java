@@ -1,14 +1,17 @@
 package com.valiantmarauders.minecraft.nospawn;
 
+import java.util.List;
+
+import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.valiantmarauders.minecraft.block.BlockChangeDatabase;
+import com.valiantmarauders.minecraft.block.Cuboid;
 import com.valiantmarauders.minecraft.command.CommandInterface;
 import com.valiantmarauders.minecraft.location.CuboidManager;
-import com.valiantmarauders.minecraft.location.Cuboid;
 
 public class RemoveArea implements CommandInterface {
 	private JavaPlugin plugin;
@@ -36,8 +39,10 @@ public class RemoveArea implements CommandInterface {
 				if (area != null) {
 					BlockChangeDatabase blockDB = ((NoSpawn) plugin)
 							.getBlockChangeDatabase();
-					blockDB.restore(area.getLocation1().getBlock());
-					blockDB.restore(area.getLocation2().getBlock());
+					List<Location> points = area.getPoints();
+					for (Location loc : points) {
+						blockDB.restore(loc.getBlock());
+					}
 					if (cuboidManager.remove(area)) {
 						player.sendMessage("Area " + area + " removed.");
 						return true;
