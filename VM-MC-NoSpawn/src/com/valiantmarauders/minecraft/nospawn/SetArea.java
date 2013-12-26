@@ -4,9 +4,10 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.valiantmarauders.minecraft.block.Cuboid;
 import com.valiantmarauders.minecraft.command.CommandInterface;
 import com.valiantmarauders.minecraft.location.CuboidManager;
-import com.valiantmarauders.minecraft.location.Cuboid;
+import com.valiantmarauders.minecraft.selection.SelectionManager;
 
 public class SetArea implements CommandInterface {
 	private JavaPlugin plugin;

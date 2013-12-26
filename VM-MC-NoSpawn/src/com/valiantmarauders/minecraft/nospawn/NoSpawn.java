@@ -8,6 +8,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.valiantmarauders.minecraft.block.BlockChangeDatabase;
 import com.valiantmarauders.minecraft.command.CommandHandler;
 import com.valiantmarauders.minecraft.location.CuboidManager;
+import com.valiantmarauders.minecraft.selection.CuboidSelectionManager;
+import com.valiantmarauders.minecraft.selection.SelectionManager;
 
 /**
  * 
@@ -37,9 +39,11 @@ import com.valiantmarauders.minecraft.location.CuboidManager;
  */
 public class NoSpawn extends JavaPlugin {
 
+	private static final Material WAND = Material.ARROW;
 	private CuboidManager cuboidManager;
 	private SelectionManager selectionManager;
 	private BlockChangeDatabase blockDB;
+	private CommandHandler handler;
 
 	public CuboidManager getAreaManager() {
 		return cuboidManager;
@@ -54,17 +58,17 @@ public class NoSpawn extends JavaPlugin {
 		// this.saveDefaultConfig();
 		PluginManager pm = this.getServer().getPluginManager();
 		cuboidManager = new NoSpawnAreaManager(this);
-		selectionManager = new SelectionManager(this);
+		selectionManager = new CuboidSelectionManager(this, WAND);
 		blockDB = new NoSpawnBlockChangeDatabase(this);
 		pm.registerEvents(new MobSpawnListener(this), this);
-		pm.registerEvents(new BlockSelectListener(this, Material.ARROW,
-				selectionManager), this);
+		pm.registerEvents(
+				new BlockSelectListener(this, WAND, selectionManager), this);
 		initializeCommands();
 	}
 
 	private void initializeCommands() {
 		// TODO Auto-generated method stub
-		CommandHandler handler = new CommandHandler();
+		handler = new CommandHandler();
 		handler.register("reload", new Reload(this));
 		handler.register("list", new ListAreas(this, cuboidManager));
 		handler.register("set", new SetArea(this, cuboidManager,

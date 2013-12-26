@@ -9,9 +9,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.valiantmarauders.minecraft.block.BlockChangeDatabase;
+import com.valiantmarauders.minecraft.block.Cuboid;
 import com.valiantmarauders.minecraft.command.CommandInterface;
 import com.valiantmarauders.minecraft.location.CuboidManager;
-import com.valiantmarauders.minecraft.location.Cuboid;
 
 public class ShowAreas implements CommandInterface {
 	private JavaPlugin plugin;

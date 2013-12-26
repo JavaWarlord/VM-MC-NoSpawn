@@ -10,6 +10,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.valiantmarauders.minecraft.block.BlockChangeDatabase;
+import com.valiantmarauders.minecraft.selection.SelectionManager;
 
 public class BlockSelectListener implements Listener {
 	private JavaPlugin plugin;
@@ -28,35 +29,29 @@ public class BlockSelectListener implements Listener {
 	public void onPlayerInteract(PlayerInteractEvent event) {
 		Block block = event.getClickedBlock();
 		if (event.getItem() != null) {
-			if (event.getItem().getType() == getSelectionTool()) {
-				int index = 0;
+			if (event.getItem().getType() == getSelectionToolType()) {
 				if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
-					index = 1;
-				} else if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-					index = 2;
-				}
-				if (selectionManager != null) {
-					selectionManager.update(event.getPlayer(),
-							block.getLocation(), index);
-				}
-			} else {
-				event.getPlayer().sendMessage("Hitting a block.");
-				BlockChangeDatabase blockDB = ((NoSpawn) plugin)
-						.getBlockChangeDatabase();
-				if (blockDB.isChanged(block)) {
-					event.getPlayer().sendMessage("Changing a block.");
-					blockDB.restore(block);
+					if (selectionManager != null) {
+						selectionManager.addPoint(event.getPlayer(),
+								event.getItem(), block);
+					}
+				} else {
+					BlockChangeDatabase blockDB = ((NoSpawn) plugin)
+							.getBlockChangeDatabase();
+					if (blockDB.isChanged(block.getLocation())) {
+						blockDB.restore(block.getLocation());
+					}
 				}
 			}
 		}
 	}
 
-	public void setSelectionTool(Material tool) {
+	public void setSelectionToolType(Material tool) {
 		// TODO Auto-generated method stub
 		this.tool = tool;
 	}
 
-	public Material getSelectionTool() {
+	public Material getSelectionToolType() {
 		// TODO Auto-generated method stub
 		return tool;
 	}

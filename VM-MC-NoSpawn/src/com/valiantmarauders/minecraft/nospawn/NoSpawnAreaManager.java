@@ -12,8 +12,8 @@ import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.valiantmarauders.minecraft.block.Cuboid;
 import com.valiantmarauders.minecraft.location.CuboidManager;
-import com.valiantmarauders.minecraft.location.Cuboid;
 
 public class NoSpawnAreaManager implements CuboidManager {
 

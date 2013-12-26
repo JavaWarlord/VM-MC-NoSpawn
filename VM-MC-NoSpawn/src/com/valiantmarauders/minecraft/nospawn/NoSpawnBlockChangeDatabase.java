@@ -58,14 +58,6 @@ public class NoSpawnBlockChangeDatabase implements BlockChangeDatabase {
 		blocks.clear();
 	}
 
-	public JavaPlugin getPlugin() {
-		return plugin;
-	}
-
-	public void setPlugin(JavaPlugin plugin) {
-		this.plugin = plugin;
-	}
-
 	@Override
 	public Map<Block, Material> load() {
 		// TODO Auto-generated method stub
