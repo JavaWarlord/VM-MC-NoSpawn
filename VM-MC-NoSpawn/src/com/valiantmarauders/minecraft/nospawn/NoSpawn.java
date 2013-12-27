@@ -51,7 +51,7 @@ public class NoSpawn extends JavaPlugin {
 
 	public void onEnable() {
 		// Save a copy of the default config.yml if one is not there
-		// this.saveDefaultConfig();
+		this.saveDefaultConfig();
 		PluginManager pm = this.getServer().getPluginManager();
 		areaManager = new AreaManager(this);
 		selectionManager = new CuboidSelectionManager(this, Material.ARROW);
