@@ -35,13 +35,6 @@ public class NoSpawnSelectionManager extends CuboidSelectionManager implements
 	public void notify(Player player, Action action, Material material,
 			Block block) {
 		// TODO Auto-generated method stub
-		CuboidSelection selection = selections.get(player);
-		if (selection == null) {
-			selection = new CuboidSelection();
-			// selection.set(0, player.getLocation().subtract(0, 1, 0));
-			// selection.set(1, player.getLocation().subtract(0, 1, 0));
-			selections.put(player, selection);
-		}
 		if (material == getWand()) {
 			int index = 0;
 			if (action == Action.LEFT_CLICK_BLOCK) {
@@ -50,9 +43,18 @@ public class NoSpawnSelectionManager extends CuboidSelectionManager implements
 			if (action == Action.RIGHT_CLICK_BLOCK) {
 				index = 1;
 			}
-			removeGuides(selection);
+			CuboidSelection selection = selections.get(player);
+			if (selection == null) {
+				selection = new CuboidSelection();
+				selections.put(player, selection);
+			}
+			if (selection.getNumberOfPoints() >= 2) {
+				removeGuides(selection);
+			}
 			selection.set(index, block.getLocation());
-			addGuides(selection);
+			if (selection.getNumberOfPoints() >= 2) {
+				addGuides(selection);
+			}
 		} else {
 			blockChangeDB.restore(block.getLocation());
 		}
