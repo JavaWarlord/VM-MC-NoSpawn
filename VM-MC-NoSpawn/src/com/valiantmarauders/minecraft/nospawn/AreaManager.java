@@ -18,7 +18,7 @@ public class AreaManager {
 
 	private JavaPlugin plugin;
 	private String fileName;
-	private List<Cuboid> areas;
+	private List<NoSpawnArea> areas;
 
 	public AreaManager(JavaPlugin plugin) {
 		// TODO Auto-generated constructor stub
@@ -26,20 +26,20 @@ public class AreaManager {
 		fileName = "areas.dat";
 		areas = load();
 		if (areas == null) {
-			areas = new ArrayList<Cuboid>();
+			areas = new ArrayList<NoSpawnArea>();
 		}
 	}
 
-	public List<Cuboid> load() {
+	public List<NoSpawnArea> load() {
 		plugin.getLogger().info("Loading areas");
 		File file = new File("plugins/NoSpawn/" + fileName);
-		List<Cuboid> areas = new ArrayList<Cuboid>();
+		List<NoSpawnArea> areas = new ArrayList<NoSpawnArea>();
 		if (file.exists()) {
 			try {
 				ObjectInputStream ois = new ObjectInputStream(
 						new FileInputStream(file.getAbsolutePath()));
 				while (ois.available() > 0) {
-					areas.add((Cuboid) ois.readObject());
+					areas.add((NoSpawnArea) ois.readObject());
 				}
 				ois.close();
 			} catch (Exception e) {
@@ -56,7 +56,7 @@ public class AreaManager {
 		try {
 			ObjectOutputStream oos = new ObjectOutputStream(
 					new FileOutputStream(file.getAbsolutePath()));
-			for (Cuboid area : areas) {
+			for (NoSpawnArea area : areas) {
 				oos.writeObject(area);
 			}
 			oos.flush();
@@ -73,23 +73,23 @@ public class AreaManager {
 			sender.sendMessage("There are no defined areas.");
 		} else {
 			sender.sendMessage("Areas");
-			for (Cuboid a : areas) {
+			for (NoSpawnArea a : areas) {
 				sender.sendMessage(a.toString());
 			}
 		}
 	}
 
-	public boolean add(Cuboid cuboid) {
+	public boolean add(NoSpawnArea area) {
 		// TODO Auto-generated method stub
-		if (areas.contains(cuboid))
+		if (areas.contains(area))
 			return false;
 		else
-			return areas.add(cuboid);
+			return areas.add(area);
 	}
 
 	public boolean contains(Location location) {
 		// TODO Auto-generated method stub
-		for (Cuboid area : areas) {
+		for (NoSpawnArea area : areas) {
 			if (area.contains(location)) {
 				return true;
 			}
@@ -97,9 +97,9 @@ public class AreaManager {
 		return false;
 	}
 
-	public Cuboid getArea(Location location) {
+	public NoSpawnArea getArea(Location location) {
 		// TODO Auto-generated method stub
-		for (Cuboid area : areas) {
+		for (NoSpawnArea area : areas) {
 			if (area.contains(location)) {
 				return area;
 			}
