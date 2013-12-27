@@ -38,19 +38,8 @@ public class AreaManager {
 			try {
 				ObjectInputStream ois = new ObjectInputStream(
 						new FileInputStream(file.getAbsolutePath()));
-				Object object = ois.readObject();
-				@SuppressWarnings("unchecked")
-				ArrayList<String> result = (ArrayList<String>) object;
-				for (String areaText : result) {
-					String[] values = areaText.split(",");
-					areas.add(new Cuboid(
-							plugin.getServer().getWorld(values[0]), Integer
-									.valueOf(values[1]), Integer
-									.valueOf(values[2]), Integer
-									.valueOf(values[3]), Integer
-									.valueOf(values[4]), Integer
-									.valueOf(values[5]), Integer
-									.valueOf(values[6])));
+				while (ois.available() > 0) {
+					areas.add((Cuboid) ois.readObject());
 				}
 				ois.close();
 			} catch (Exception e) {
@@ -67,11 +56,9 @@ public class AreaManager {
 		try {
 			ObjectOutputStream oos = new ObjectOutputStream(
 					new FileOutputStream(file.getAbsolutePath()));
-			ArrayList<String> format = new ArrayList<String>();
 			for (Cuboid area : areas) {
-				format.add(area.toSaveFormat());
+				oos.writeObject(area);
 			}
-			oos.writeObject(format);
 			oos.flush();
 			oos.close();
 		} catch (Exception e) {
