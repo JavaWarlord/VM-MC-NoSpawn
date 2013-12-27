@@ -7,7 +7,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.valiantmarauders.minecraft.block.PlayerSelectBlockListener;
 import com.valiantmarauders.minecraft.command.CommandHandler;
-import com.valiantmarauders.minecraft.selection.CuboidSelectionManager;
 import com.valiantmarauders.minecraft.selection.SelectionManager;
 
 /**
@@ -39,7 +38,7 @@ import com.valiantmarauders.minecraft.selection.SelectionManager;
 public class NoSpawn extends JavaPlugin {
 
 	private NoSpawnAreaManager noSpawnAreaManager;
-	private SelectionManager selectionManager;
+	private SelectionManager noSpawnSelectionManager;
 
 	public NoSpawnAreaManager getAreaManager() {
 		return noSpawnAreaManager;
@@ -54,10 +53,11 @@ public class NoSpawn extends JavaPlugin {
 		this.saveDefaultConfig();
 		PluginManager pm = this.getServer().getPluginManager();
 		noSpawnAreaManager = new NoSpawnAreaManager(this);
-		selectionManager = new CuboidSelectionManager(this, Material.ARROW);
+		noSpawnSelectionManager = new NoSpawnSelectionManager(this,
+				Material.ARROW);
 		pm.registerEvents(new MobSpawnListener(this), this);
-		pm.registerEvents(
-				new PlayerSelectBlockListener(this, selectionManager), this);
+		pm.registerEvents(new PlayerSelectBlockListener(this,
+				noSpawnSelectionManager), this);
 		initializeCommands();
 	}
 
@@ -66,9 +66,10 @@ public class NoSpawn extends JavaPlugin {
 		CommandHandler handler = new CommandHandler();
 		handler.register("reload", new Reload(this));
 		handler.register("list", new ListNoSpawnAreas(this, noSpawnAreaManager));
-		handler.register("set",
-				new SetNoSpawnArea(this, noSpawnAreaManager, selectionManager));
-		handler.register("remove", new RemoveNoSpawnArea(this, noSpawnAreaManager));
+		handler.register("set", new SetNoSpawnArea(this, noSpawnAreaManager,
+				noSpawnSelectionManager));
+		handler.register("remove", new RemoveNoSpawnArea(this,
+				noSpawnAreaManager));
 		getCommand("nosp").setExecutor(handler);
 		getCommand("nospawn").setExecutor(handler);
 	}
