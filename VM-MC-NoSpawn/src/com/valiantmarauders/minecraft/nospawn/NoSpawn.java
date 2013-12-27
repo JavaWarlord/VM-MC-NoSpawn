@@ -65,7 +65,7 @@ public class NoSpawn extends JavaPlugin {
 		// TODO Auto-generated method stub
 		CommandHandler handler = new CommandHandler();
 		handler.register("reload", new Reload(this));
-		handler.register("list", new ListAreas(this, noSpawnAreaManager));
+		handler.register("list", new ListNoSpawnAreas(this, noSpawnAreaManager));
 		handler.register("set",
 				new SetNoSpawnArea(this, noSpawnAreaManager, selectionManager));
 		handler.register("remove", new RemoveNoSpawnArea(this, noSpawnAreaManager));

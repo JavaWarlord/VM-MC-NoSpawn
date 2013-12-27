@@ -6,12 +6,12 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.valiantmarauders.minecraft.command.CommandInterface;
 
-public class ListAreas implements CommandInterface {
+public class ListNoSpawnAreas implements CommandInterface {
 
 	private JavaPlugin plugin;
 	private NoSpawnAreaManager noSpawnAreaManager;
 
-	public ListAreas(JavaPlugin plugin, NoSpawnAreaManager noSpawnAreaManager) {
+	public ListNoSpawnAreas(JavaPlugin plugin, NoSpawnAreaManager noSpawnAreaManager) {
 		// TODO Auto-generated constructor stub
 		this.setPlugin(plugin);
 		this.noSpawnAreaManager = noSpawnAreaManager;
