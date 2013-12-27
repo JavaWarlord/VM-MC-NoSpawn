@@ -36,6 +36,12 @@ public class NoSpawnSelectionManager extends CuboidSelectionManager implements
 			Block block) {
 		// TODO Auto-generated method stub
 		CuboidSelection selection = selections.get(player);
+		if (selection == null) {
+			selection = new CuboidSelection();
+			// selection.set(0, player.getLocation().subtract(0, 1, 0));
+			// selection.set(1, player.getLocation().subtract(0, 1, 0));
+			selections.put(player, selection);
+		}
 		if (material == getWand()) {
 			int index = 0;
 			if (action == Action.LEFT_CLICK_BLOCK) {
@@ -56,14 +62,18 @@ public class NoSpawnSelectionManager extends CuboidSelectionManager implements
 	@Override
 	public void removeGuides(Selection selection) {
 		// TODO Auto-generated method stub
-		List<Location> guideBlockLocations = new ArrayList<Location>();
-		guideBlockLocations.addAll(selection.getPoints());
-		List<Block> guideBlocks = calculateGuides(selection);
-		for (Block b : guideBlocks) {
-			guideBlockLocations.add(b.getLocation());
-		}
-		for (Location loc : guideBlockLocations) {
-			blockChangeDB.restore(loc);
+		if (selection.getPoints() != null) {
+			List<Location> guideBlockLocations = new ArrayList<Location>();
+			guideBlockLocations.addAll(selection.getPoints());
+			List<Block> guideBlocks = calculateGuides(selection);
+			if (guideBlocks != null) {
+				for (Block b : guideBlocks) {
+					guideBlockLocations.add(b.getLocation());
+				}
+				for (Location loc : guideBlockLocations) {
+					blockChangeDB.restore(loc);
+				}
+			}
 		}
 	}
 
@@ -73,41 +83,50 @@ public class NoSpawnSelectionManager extends CuboidSelectionManager implements
 		List<Location> guideBlockLocations = new ArrayList<Location>();
 		guideBlockLocations.addAll(selection.getPoints());
 		List<Block> guideBlocks = calculateGuides(selection);
-		for (Block b : guideBlocks) {
-			guideBlockLocations.add(b.getLocation());
-		}
-		for (Location loc : guideBlockLocations) {
-			blockChangeDB.add(loc, guideMaterial);
+		if (guideBlocks != null) {
+			for (Block b : guideBlocks) {
+				guideBlockLocations.add(b.getLocation());
+			}
+			for (Location loc : guideBlockLocations) {
+				blockChangeDB.add(loc, guideMaterial);
+			}
 		}
 	}
 
 	@Override
 	public List<Block> calculateGuides(Selection selection) {
 		// TODO Auto-generated method stub
-		World world = selection.getPoints().get(0).getWorld();
-		List<Block> guides = new ArrayList<Block>();
-		int minX = (int) Math.min(selection.getPoints().get(0).getBlockX(),
-				selection.getPoints().get(1).getBlockX());
-		int maxX = (int) Math.max(selection.getPoints().get(0).getBlockX(),
-				selection.getPoints().get(1).getBlockX());
-		int minY = (int) Math.min(selection.getPoints().get(0).getBlockY(),
-				selection.getPoints().get(1).getBlockY());
-		int maxY = (int) Math.max(selection.getPoints().get(0).getBlockY(),
-				selection.getPoints().get(1).getBlockY());
-		int minZ = (int) Math.min(selection.getPoints().get(0).getBlockZ(),
-				selection.getPoints().get(1).getBlockZ());
-		int maxZ = (int) Math.max(selection.getPoints().get(0).getBlockZ(),
-				selection.getPoints().get(1).getBlockZ());
-		for (int x = minX; x < maxX; x++) {
-			if (x != minX && x != maxX)
-				continue;
-			for (int y = minY; y < maxY; y++) {
-				if (y != minY && y != maxY)
-					continue;
-				for (int z = minZ; z < maxZ; z++) {
-					if (z != minZ && z != maxZ)
+		List<Block> guides = null;
+		List<Location> selectionPoints = selection.getPoints();
+		if (selectionPoints != null) {
+			if (selectionPoints.get(0) != null
+					&& selectionPoints.get(1) != null) {
+				World world = selectionPoints.get(0).getWorld();
+				guides = new ArrayList<Block>();
+				int minX = (int) Math.min(selectionPoints.get(0).getBlockX(),
+						selectionPoints.get(1).getBlockX());
+				int maxX = (int) Math.max(selectionPoints.get(0).getBlockX(),
+						selectionPoints.get(1).getBlockX());
+				int minY = (int) Math.min(selectionPoints.get(0).getBlockY(),
+						selectionPoints.get(1).getBlockY());
+				int maxY = (int) Math.max(selectionPoints.get(0).getBlockY(),
+						selectionPoints.get(1).getBlockY());
+				int minZ = (int) Math.min(selectionPoints.get(0).getBlockZ(),
+						selectionPoints.get(1).getBlockZ());
+				int maxZ = (int) Math.max(selectionPoints.get(0).getBlockZ(),
+						selectionPoints.get(1).getBlockZ());
+				for (int x = minX; x < maxX; x++) {
+					if (x != minX && x != maxX)
 						continue;
-					guides.add(new Location(world, x, y, z).getBlock());
+					for (int y = minY; y < maxY; y++) {
+						if (y != minY && y != maxY)
+							continue;
+						for (int z = minZ; z < maxZ; z++) {
+							if (z != minZ && z != maxZ)
+								continue;
+							guides.add(new Location(world, x, y, z).getBlock());
+						}
+					}
 				}
 			}
 		}
