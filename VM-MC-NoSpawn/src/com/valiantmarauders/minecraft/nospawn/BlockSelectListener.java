@@ -2,6 +2,7 @@ package com.valiantmarauders.minecraft.nospawn;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -10,40 +11,36 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.valiantmarauders.minecraft.selection.SelectionManager;
 
+/**
+ * This class listens for a {@link Player} to click on a {@link Block} and
+ * updates a {@link SelectionManager}
+ * 
+ * @author JavaWarlord
+ * 
+ */
 public class BlockSelectListener implements Listener {
 	private JavaPlugin plugin;
-	private Material tool;
 	private SelectionManager selectionManager;
 
-	public BlockSelectListener(JavaPlugin plugin, Material tool,
+	public BlockSelectListener(JavaPlugin plugin,
 			SelectionManager selectionManager) {
 		// TODO Auto-generated constructor stub
 		this.setPlugin(plugin);
-		this.tool = tool;
 		this.selectionManager = selectionManager;
 	}
 
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.LOW)
 	public void onPlayerInteract(PlayerInteractEvent event) {
+		Player player = event.getPlayer();
+		Material material = null;
+		Block block = event.getClickedBlock();
+		// Check to see if the player has something in his hands
 		if (event.getItem() != null) {
-			if (event.getItem().getType() == getSelectionTool()) {
-				Block block = event.getClickedBlock();
-				if (selectionManager != null) {
-					selectionManager.addPoint(event.getPlayer(), event
-							.getItem().getType(), block);
-				}
+			material = event.getItem().getType();
+			if (selectionManager != null) {
+				selectionManager.addPoint(player, material, block);
 			}
 		}
-	}
-
-	public void setSelectionTool(Material tool) {
-		// TODO Auto-generated method stub
-		this.tool = tool;
-	}
-
-	public Material getSelectionTool() {
-		// TODO Auto-generated method stub
-		return tool;
 	}
 
 	public JavaPlugin getPlugin() {
