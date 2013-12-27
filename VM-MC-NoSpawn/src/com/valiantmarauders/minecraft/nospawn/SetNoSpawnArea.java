@@ -6,15 +6,15 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.valiantmarauders.minecraft.command.CommandInterface;
-import com.valiantmarauders.minecraft.selection.SelectionManager;
+import com.valiantmarauders.minecraft.selection.CuboidSelectionManager;
 
 public class SetNoSpawnArea implements CommandInterface {
 	private JavaPlugin plugin;
 	private NoSpawnAreaManager noSpawnAreaManager;
-	private SelectionManager selectionManager;
+	private CuboidSelectionManager selectionManager;
 
 	public SetNoSpawnArea(JavaPlugin plugin, NoSpawnAreaManager noSpawnAreaManager,
-			SelectionManager selectionManager) {
+			CuboidSelectionManager selectionManager) {
 		super();
 		this.plugin = plugin;
 		this.noSpawnAreaManager = noSpawnAreaManager;

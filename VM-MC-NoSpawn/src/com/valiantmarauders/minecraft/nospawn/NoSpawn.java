@@ -8,7 +8,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.valiantmarauders.minecraft.block.BlockClickHandler;
 import com.valiantmarauders.minecraft.block.PlayerClickBlockListener;
 import com.valiantmarauders.minecraft.command.CommandHandler;
-import com.valiantmarauders.minecraft.selection.SelectionManager;
+import com.valiantmarauders.minecraft.selection.CuboidSelectionManager;
 
 /**
  * 
@@ -39,7 +39,7 @@ import com.valiantmarauders.minecraft.selection.SelectionManager;
 public class NoSpawn extends JavaPlugin {
 
 	private NoSpawnAreaManager noSpawnAreaManager;
-	private SelectionManager noSpawnSelectionManager;
+	private CuboidSelectionManager noSpawnSelectionManager;
 
 	public NoSpawnAreaManager getAreaManager() {
 		return noSpawnAreaManager;
