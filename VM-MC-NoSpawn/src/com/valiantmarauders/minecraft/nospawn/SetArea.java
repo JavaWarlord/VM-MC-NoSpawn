@@ -27,8 +27,8 @@ public class SetArea implements CommandInterface {
 			String commandLabel, String[] args) {
 		// TODO Auto-generated method stub
 		if (sender instanceof Player) {
-			Cuboid cuboid = new Cuboid(
-					selectionManager.getSelection((Player) sender));
+			Cuboid cuboid = new Cuboid(selectionManager.getSelection(
+					(Player) sender).getPoints());
 			sender.sendMessage("Set area: " + cuboid);
 			plugin.getLogger().info(sender + " is adding area " + cuboid);
 			return areaManager.add(cuboid.clone());
