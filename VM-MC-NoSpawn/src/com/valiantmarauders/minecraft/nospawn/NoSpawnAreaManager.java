@@ -12,15 +12,13 @@ import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.valiantmarauders.minecraft.block.Cuboid;
-
-public class AreaManager {
+public class NoSpawnAreaManager {
 
 	private JavaPlugin plugin;
 	private String fileName;
 	private List<NoSpawnArea> areas;
 
-	public AreaManager(JavaPlugin plugin) {
+	public NoSpawnAreaManager(JavaPlugin plugin) {
 		// TODO Auto-generated constructor stub
 		this.plugin = plugin;
 		fileName = "areas.dat";
@@ -107,7 +105,7 @@ public class AreaManager {
 		return null;
 	}
 
-	public boolean remove(Cuboid area) {
+	public boolean remove(NoSpawnArea area) {
 		// TODO Auto-generated method stub
 		return areas.remove(area);
 	}

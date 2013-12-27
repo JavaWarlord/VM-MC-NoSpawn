@@ -9,19 +9,19 @@ import com.valiantmarauders.minecraft.command.CommandInterface;
 public class ListAreas implements CommandInterface {
 
 	private JavaPlugin plugin;
-	private AreaManager areaManager;
+	private NoSpawnAreaManager noSpawnAreaManager;
 
-	public ListAreas(JavaPlugin plugin, AreaManager areaManager) {
+	public ListAreas(JavaPlugin plugin, NoSpawnAreaManager noSpawnAreaManager) {
 		// TODO Auto-generated constructor stub
 		this.setPlugin(plugin);
-		this.areaManager = areaManager;
+		this.noSpawnAreaManager = noSpawnAreaManager;
 	}
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
 		// TODO Auto-generated method stub
-		areaManager.display(sender);
+		noSpawnAreaManager.display(sender);
 		return false;
 	}
 

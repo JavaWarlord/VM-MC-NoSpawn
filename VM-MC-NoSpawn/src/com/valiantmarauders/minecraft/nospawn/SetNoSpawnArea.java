@@ -5,20 +5,19 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.valiantmarauders.minecraft.block.Cuboid;
 import com.valiantmarauders.minecraft.command.CommandInterface;
 import com.valiantmarauders.minecraft.selection.SelectionManager;
 
-public class SetArea implements CommandInterface {
+public class SetNoSpawnArea implements CommandInterface {
 	private JavaPlugin plugin;
-	private AreaManager areaManager;
+	private NoSpawnAreaManager noSpawnAreaManager;
 	private SelectionManager selectionManager;
 
-	public SetArea(JavaPlugin plugin, AreaManager areaManager,
+	public SetNoSpawnArea(JavaPlugin plugin, NoSpawnAreaManager noSpawnAreaManager,
 			SelectionManager selectionManager) {
 		super();
 		this.plugin = plugin;
-		this.areaManager = areaManager;
+		this.noSpawnAreaManager = noSpawnAreaManager;
 		this.selectionManager = selectionManager;
 	}
 
@@ -27,11 +26,11 @@ public class SetArea implements CommandInterface {
 			String commandLabel, String[] args) {
 		// TODO Auto-generated method stub
 		if (sender instanceof Player) {
-			Cuboid cuboid = new Cuboid(selectionManager.getSelection(
+			NoSpawnArea area = new NoSpawnArea(selectionManager.getSelection(
 					(Player) sender).getPoints());
-			sender.sendMessage("Set area: " + cuboid);
-			plugin.getLogger().info(sender + " is adding area " + cuboid);
-			return areaManager.add(cuboid.clone());
+			sender.sendMessage("Set area: " + area);
+			plugin.getLogger().info(sender + " is adding area " + area);
+			return noSpawnAreaManager.add((NoSpawnArea) area.clone());
 		}
 		return false;
 	}

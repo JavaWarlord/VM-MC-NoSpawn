@@ -38,22 +38,22 @@ import com.valiantmarauders.minecraft.selection.SelectionManager;
  */
 public class NoSpawn extends JavaPlugin {
 
-	private AreaManager areaManager;
+	private NoSpawnAreaManager noSpawnAreaManager;
 	private SelectionManager selectionManager;
 
-	public AreaManager getAreaManager() {
-		return areaManager;
+	public NoSpawnAreaManager getAreaManager() {
+		return noSpawnAreaManager;
 	}
 
-	public void setAreaManager(AreaManager areaManager) {
-		this.areaManager = areaManager;
+	public void setAreaManager(NoSpawnAreaManager noSpawnAreaManager) {
+		this.noSpawnAreaManager = noSpawnAreaManager;
 	}
 
 	public void onEnable() {
 		// Save a copy of the default config.yml if one is not there
 		this.saveDefaultConfig();
 		PluginManager pm = this.getServer().getPluginManager();
-		areaManager = new AreaManager(this);
+		noSpawnAreaManager = new NoSpawnAreaManager(this);
 		selectionManager = new CuboidSelectionManager(this, Material.ARROW);
 		pm.registerEvents(new MobSpawnListener(this), this);
 		pm.registerEvents(
@@ -65,21 +65,21 @@ public class NoSpawn extends JavaPlugin {
 		// TODO Auto-generated method stub
 		CommandHandler handler = new CommandHandler();
 		handler.register("reload", new Reload(this));
-		handler.register("list", new ListAreas(this, areaManager));
+		handler.register("list", new ListAreas(this, noSpawnAreaManager));
 		handler.register("set",
-				new SetArea(this, areaManager, selectionManager));
-		handler.register("remove", new RemoveArea(this, areaManager));
+				new SetNoSpawnArea(this, noSpawnAreaManager, selectionManager));
+		handler.register("remove", new RemoveNoSpawnArea(this, noSpawnAreaManager));
 		getCommand("nosp").setExecutor(handler);
 		getCommand("nospawn").setExecutor(handler);
 	}
 
 	public void onDisable() {
-		areaManager.save();
+		noSpawnAreaManager.save();
 	}
 
 	public void detectedSpawn(CreatureSpawnEvent event) {
 		// TODO Auto-generated method stub
-		if (areaManager.contains(event.getEntity().getLocation())) {
+		if (noSpawnAreaManager.contains(event.getEntity().getLocation())) {
 			event.setCancelled(true);
 		}
 	}

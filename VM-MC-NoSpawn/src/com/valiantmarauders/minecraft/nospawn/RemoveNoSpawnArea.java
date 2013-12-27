@@ -5,17 +5,16 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.valiantmarauders.minecraft.block.Cuboid;
 import com.valiantmarauders.minecraft.command.CommandInterface;
 
-public class RemoveArea implements CommandInterface {
+public class RemoveNoSpawnArea implements CommandInterface {
 	private JavaPlugin plugin;
-	private AreaManager areaManager;
+	private NoSpawnAreaManager noSpawnAreaManager;
 
-	public RemoveArea(JavaPlugin plugin, AreaManager areaManager) {
+	public RemoveNoSpawnArea(JavaPlugin plugin, NoSpawnAreaManager noSpawnAreaManager) {
 		super();
 		this.plugin = plugin;
-		this.areaManager = areaManager;
+		this.noSpawnAreaManager = noSpawnAreaManager;
 	}
 
 	@Override
@@ -24,15 +23,15 @@ public class RemoveArea implements CommandInterface {
 		// TODO Auto-generated method stub
 		if (args.length > 1) {
 			if (args[1].equalsIgnoreCase("all")) {
-				areaManager.removeAll();
+				noSpawnAreaManager.removeAll();
 				sender.sendMessage("All areas removed.");
 			}
 		} else {
 			if (sender instanceof Player) {
 				Player player = (Player) sender;
-				Cuboid area = areaManager.getArea(player.getLocation());
+				NoSpawnArea area = noSpawnAreaManager.getArea(player.getLocation());
 				if (area != null) {
-					if (areaManager.remove(area)) {
+					if (noSpawnAreaManager.remove(area)) {
 						player.sendMessage("Area " + area + " removed.");
 						return true;
 					} else {
