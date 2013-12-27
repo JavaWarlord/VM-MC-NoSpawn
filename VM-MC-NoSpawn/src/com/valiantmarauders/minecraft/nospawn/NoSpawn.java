@@ -77,6 +77,7 @@ public class NoSpawn extends JavaPlugin {
 
 	public void onDisable() {
 		noSpawnAreaManager.save();
+		noSpawnSelectionManager.restoreAll();
 	}
 
 	public void detectedSpawn(CreatureSpawnEvent event) {

@@ -23,7 +23,7 @@ public class NoSpawnSelectionManager extends CuboidSelectionManager implements
 		BlockClickHandler, DisplayableSelection {
 
 	private BlockChangeDatabase blockChangeDB;
-	private Material guideMaterial = Material.WOOL;
+	private Material guideMaterial = Material.GLASS;
 
 	public NoSpawnSelectionManager(JavaPlugin plugin, Material wand) {
 		// TODO Auto-generated constructor stub
@@ -117,21 +117,34 @@ public class NoSpawnSelectionManager extends CuboidSelectionManager implements
 						selectionPoints.get(1).getBlockZ());
 				int maxZ = (int) Math.max(selectionPoints.get(0).getBlockZ(),
 						selectionPoints.get(1).getBlockZ());
-				for (int x = minX; x < maxX; x++) {
-					if (x != minX && x != maxX)
-						continue;
-					for (int y = minY; y < maxY; y++) {
-						if (y != minY && y != maxY)
-							continue;
-						for (int z = minZ; z < maxZ; z++) {
-							if (z != minZ && z != maxZ)
-								continue;
-							guides.add(new Location(world, x, y, z).getBlock());
-						}
-					}
-				}
+
+				guides.add(new Location(world, minX, minY, minZ).getBlock());
+				guides.add(new Location(world, maxX, minY, minZ).getBlock());
+				guides.add(new Location(world, minX, maxY, minZ).getBlock());
+				guides.add(new Location(world, minX, minY, maxZ).getBlock());
+				guides.add(new Location(world, minX, maxY, maxZ).getBlock());
+				guides.add(new Location(world, maxX, minY, maxZ).getBlock());
+				guides.add(new Location(world, maxX, maxY, minZ).getBlock());
+				guides.add(new Location(world, maxX, maxY, maxZ).getBlock());
+
+				// for (int x = minX; x <= maxX; x++) {
+				// for (int y = minY; y <= maxY; y++) {
+				// for (int z = minZ; z <= maxZ; z++) {
+				// if (x == minX || x == maxX || y == minY
+				// || y == maxY || z == minZ || z == maxZ)
+				// guides.add(new Location(world, x, y, z)
+				// .getBlock());
+				// }
+				// }
+				// }
 			}
 		}
 		return guides;
+	}
+
+	@Override
+	public void restoreAll() {
+		// TODO Auto-generated method stub
+		blockChangeDB.restoreAll();
 	}
 }
