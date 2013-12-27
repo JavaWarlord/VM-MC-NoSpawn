@@ -5,8 +5,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.valiantmarauders.minecraft.block.Cuboid;
 import com.valiantmarauders.minecraft.command.CommandInterface;
-import com.valiantmarauders.minecraft.location.Cuboid;
 
 public class RemoveArea implements CommandInterface {
 	private JavaPlugin plugin;

@@ -12,7 +12,7 @@ import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.valiantmarauders.minecraft.location.Cuboid;
+import com.valiantmarauders.minecraft.block.Cuboid;
 
 public class AreaManager {
 

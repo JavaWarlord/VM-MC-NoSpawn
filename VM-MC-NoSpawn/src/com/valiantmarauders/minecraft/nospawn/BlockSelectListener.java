@@ -9,6 +9,8 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.valiantmarauders.minecraft.selection.SelectionManager;
+
 public class BlockSelectListener implements Listener {
 	private JavaPlugin plugin;
 	private Material tool;
@@ -34,8 +36,8 @@ public class BlockSelectListener implements Listener {
 					index = 2;
 				}
 				if (selectionManager != null) {
-					selectionManager.update(event.getPlayer(),
-							block.getLocation(), index);
+					selectionManager.addPoint(event.getPlayer(), event
+							.getItem().getType(), block);
 				}
 			}
 		}

@@ -5,7 +5,10 @@ import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.valiantmarauders.minecraft.block.PlayerSelectBlockListener;
 import com.valiantmarauders.minecraft.command.CommandHandler;
+import com.valiantmarauders.minecraft.selection.CuboidSelectionManager;
+import com.valiantmarauders.minecraft.selection.SelectionManager;
 
 /**
  * 
@@ -51,10 +54,10 @@ public class NoSpawn extends JavaPlugin {
 		// this.saveDefaultConfig();
 		PluginManager pm = this.getServer().getPluginManager();
 		areaManager = new AreaManager(this);
-		selectionManager = new SelectionManager(this);
+		selectionManager = new CuboidSelectionManager(this, Material.ARROW);
 		pm.registerEvents(new MobSpawnListener(this), this);
-		pm.registerEvents(new BlockSelectListener(this, Material.ARROW,
-				selectionManager), this);
+		pm.registerEvents(
+				new PlayerSelectBlockListener(this, selectionManager), this);
 		initializeCommands();
 	}
 
