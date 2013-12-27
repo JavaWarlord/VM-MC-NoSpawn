@@ -5,7 +5,8 @@ import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.valiantmarauders.minecraft.block.PlayerSelectBlockListener;
+import com.valiantmarauders.minecraft.block.BlockClickHandler;
+import com.valiantmarauders.minecraft.block.PlayerClickBlockListener;
 import com.valiantmarauders.minecraft.command.CommandHandler;
 import com.valiantmarauders.minecraft.selection.SelectionManager;
 
@@ -56,8 +57,8 @@ public class NoSpawn extends JavaPlugin {
 		noSpawnSelectionManager = new NoSpawnSelectionManager(this,
 				Material.ARROW);
 		pm.registerEvents(new MobSpawnListener(this), this);
-		pm.registerEvents(new PlayerSelectBlockListener(this,
-				noSpawnSelectionManager), this);
+		pm.registerEvents(new PlayerClickBlockListener(
+				(BlockClickHandler) noSpawnSelectionManager), this);
 		initializeCommands();
 	}
 
